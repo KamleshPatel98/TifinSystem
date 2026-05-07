@@ -11,6 +11,9 @@ class AuthController extends Controller
 {
     public function login()
     {
+        if (Auth::check()) {
+            return to_route('auth.dashboard')->with('success', 'You are already logged in.');
+        }
         return view('panel.auth.login');
     }
 
@@ -30,7 +33,19 @@ class AuthController extends Controller
             return back()->with('error', 'Your password is incorrect. Please try again.');
         } else {
             Auth::login($user);
-            return "hello";
+            return to_route('auth.dashboard')->with('success', 'Login successfully.');
         }
+    }
+
+    public function dashboard()
+    {
+        return view('panel.dashboard');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        session()->flush();
+        return redirect()->route('login')->with('success', 'Logout successfully.');
     }
 }
