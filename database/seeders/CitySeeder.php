@@ -15,10 +15,10 @@ class CitySeeder extends Seeder
     {
         if (City::count() == 0) {
             $data = [
-                ['state_id' => 1, 'name' => 'Raipur', 'pin_code' => '492001'],
-                ['state_id' => 1, 'name' => 'Bhilai', 'pin_code' => '490001'],
-                ['state_id' => 2, 'name' => 'Mumbai', 'pin_code' => '400001'],
-                ['state_id' => 2, 'name' => 'Pune', 'pin_code' => '411001'],
+                ['state_id' => 1, 'name' => 'Raipur'],
+                ['state_id' => 1, 'name' => 'Bhilai'],
+                ['state_id' => 2, 'name' => 'Mumbai'],
+                ['state_id' => 2, 'name' => 'Pune'],
             ];
 
             foreach ($data as $city) {

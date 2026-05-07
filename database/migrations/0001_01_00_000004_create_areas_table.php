@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cities', function (Blueprint $table) {
+        Schema::create('areas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('state_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('state_id')->constrained('states')->onDelete('cascade');
+            $table->foreignId('city_id')->constrained('cities')->onDelete('cascade');
             $table->string('name');
-            $table->string('pin_code')->unique();
+            $table->string('pin_code')->nullable();
             $table->boolean('is_active')->default(true)->comment('1 = active, 0 = inactive');
             $table->timestamps();
 
-            $table->unique(['state_id', 'name']);
+            $table->unique(['city_id', 'name']);
         });
     }
 
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cities');
+        Schema::dropIfExists('areas');
     }
 };
