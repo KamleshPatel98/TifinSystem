@@ -19,6 +19,7 @@ Route::middleware(['auth'])->prefix('panel')->group(function () {
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
 
     Route::get('dropdowns-state', [DropdownController::class, 'state'])->name('dropdowns.state');
+    Route::get('dropdowns-city', [DropdownController::class, 'city'])->name('dropdowns.city');
 
 
     Route::resource('states', StateController::class);
