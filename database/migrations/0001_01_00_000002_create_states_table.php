@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('states', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('code')->unique();
+            $table->string('name', 100)->unique();
+            $table->string('code', 5)->unique();
             $table->boolean('is_active')->default(true)->comment('1 = active, 0 = inactive');
             $table->timestamps();
         });

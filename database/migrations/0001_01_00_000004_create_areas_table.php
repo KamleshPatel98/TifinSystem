@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('state_id')->constrained('states')->onDelete('cascade');
             $table->foreignId('city_id')->constrained('cities')->onDelete('cascade');
-            $table->string('name');
-            $table->string('pin_code')->nullable();
+            $table->string('name', 100);
+            $table->char('pin_code', 6)->nullable();
             $table->boolean('is_active')->default(true)->comment('1 = active, 0 = inactive');
             $table->timestamps();
 

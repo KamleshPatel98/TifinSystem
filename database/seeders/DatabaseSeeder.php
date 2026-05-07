@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             SettingSeeder::class,
             StateSeeder::class,
             CitySeeder::class,
+            AreaSeeder::class,
         ]);
     }
 }
