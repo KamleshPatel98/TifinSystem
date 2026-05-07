@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\City;
+use App\Models\State;
 use Illuminate\Http\Request;
 
 class CityController extends Controller
@@ -24,7 +25,8 @@ class CityController extends Controller
             })
             ->paginate(getSetting('page_limit'));
 
-        return view('panel.geography.cities.index', compact('records'));
+        $states = State::select('id', 'name')->where('is_active', 1)->orderBy('name', 'asc')->get();
+        return view('panel.geography.cities.index', compact('records', 'states'));
     }
 
     /**

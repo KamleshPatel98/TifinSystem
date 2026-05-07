@@ -41,6 +41,8 @@
     </style>
 
     @stack('styles')
+
+    <script src="{{ asset('assets/select2/select2.min.js') }}"></script>
 </head>
 
 <body>
@@ -270,7 +272,6 @@
         });
     </script>
 
-    <script src="{{ asset('assets/select2/select2.min.js') }}"></script>
     <script>
         // select2
         $(document).ready(function() {

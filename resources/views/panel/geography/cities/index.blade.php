@@ -30,8 +30,11 @@
                     <h5 class="mb-0 fw-semibold">🎯 City List</h5>
                 </div>
                 <div class="col-md-2">
-                    <select name="state_id" class="form-select select-dropdown" id="search_state_id">
-
+                    <select name="state_id" class="form-select select-dropdown">
+                        <option value="">Select State</option>
+                        @foreach ($states as $state)
+                        <option value="{{ $state->id }}" @selected(request('state_id')==$state->id)>{{ $state->name }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col-md-3">
@@ -80,26 +83,14 @@
                     <td>{{ $row->name ?? '' }}</td>
                     <td class="text-center">@include('includes.is-active')</td>
                     <td class="text-center d-flex justify-content-center">
-                        {{-- <a href="#" class="btn btn-sm btn-outline-warning me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal{{ $row->id }}">
-                        <i class="fa fa-edit"></i>
-                        </a> --}}
-                        <a href="#"
-                            class="btn btn-sm btn-outline-warning editCityBtn"
-                            data-bs-toggle="modal"
-                            data-bs-target="#editCityModal"
-                            data-id="{{ $row->id }}"
-                            data-state="{{ $row->state_id }}"
-                            data-name="{{ $row->name }}"
-                            data-active="{{ $row->is_active }}">
+                        <a href="#" class="btn btn-sm btn-outline-warning me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal{{ $row->id }}">
                             <i class="fa fa-edit"></i>
                         </a>
-
-
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="text-center">No City Found!</td>
+                    <td colspan="6" class="text-center">No City Found!</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -126,7 +117,9 @@
                     <div class="mb-3">
                         <label for="state_id" class="form-label">State <span class="text-danger">*</span></label>
                         <select class="form-select modal-select-dropdown" id="state_id" name="state_id" required>
-
+                            @foreach($states as $state)
+                            <option value="{{ $state->id }}">{{ $state->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="mb-3">
@@ -154,11 +147,12 @@
     </div>
 </div>
 
-<div class="modal fade" id="editCityModal" tabindex="-1">
+@foreach ($records as $row)
+<div class="modal fade" id="editModal{{ $row->id }}" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
 
-            <form method="POST" id="editCityForm">
+            <form method="POST" action="{{ route('cities.update', $row->id) }}">
                 @csrf
                 @method('PUT')
 
@@ -171,21 +165,23 @@
 
                     <div class="mb-3">
                         <label class="form-label">State <span class="text-danger">*</span></label>
-                        <select class="form-select" id="edit_state_id" name="state_id" required>
-                            <option value="">Select State</option>
+                        <select class="form-select select2-edit" id="edit_state_id" name="state_id" required>
+                            @foreach($states as $state)
+                            <option value="{{ $state->id }}" @selected(old('state_id', $row->state_id)==$state->id)>{{ $state->name }}</option>
+                            @endforeach
                         </select>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">City Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="edit_name" name="name" required>
+                        <input type="text" class="form-control" id="edit_name" name="name" maxlength="255" value="{{ old('name', $row->name) }}" required placeholder="Enter country name">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Status <span class="text-danger">*</span></label>
                         <select class="form-select" id="edit_is_active" name="is_active" required>
-                            <option value="1">Active</option>
-                            <option value="0">Inactive</option>
+                            <option value="1" @selected(old('is_active', $row->is_active)==1)>Active</option>
+                            <option value="0" @selected(old('is_active', $row->is_active)==0)>Inactive</option>
                         </select>
                     </div>
 
@@ -205,6 +201,18 @@
         </div>
     </div>
 </div>
+
+<script>
+    $('#editModal{{ $row->id }}').on('shown.bs.modal', function() {
+        $(this).find('.select2-edit').select2({
+            dropdownParent: $('#editModal{{ $row->id }}'),
+            width: '100%',
+            placeholder: 'Select State'
+        });
+    });
+</script>
+@endforeach
+
 @endsection
 
 @push('scripts')
@@ -213,23 +221,11 @@
     $(document).ready(function() {
         @if(old('form_mode') === 'create')
         $('#addModal').modal('show');
+        @elseif(old('form_mode') === 'edit')
+        $('#editModal{{ old('
+            id ') }}').modal('show');
         @endif
     });
 </script>
 @endif
-
-<script>
-    function getState(id) {
-        $.ajax({
-            url: "{{ route('dropdowns.state') }}",
-            type: 'GET',
-            success: function(data) {
-                $('#search_state_id').html(data);
-                $('#state_id').html(data);
-            }
-        });
-    }
-
-    getState();
-</script>
 @endpush
