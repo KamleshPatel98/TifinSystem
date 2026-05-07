@@ -4,6 +4,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\DropdownController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StateController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,8 @@ Route::middleware(['auth'])->prefix('panel')->group(function () {
     Route::get('dropdowns-state', [DropdownController::class, 'state'])->name('dropdowns.state');
     Route::get('dropdowns-city', [DropdownController::class, 'city'])->name('dropdowns.city');
 
+    Route::get('web-data', [SettingController::class, 'webData'])->name('settings.web-data');
+    Route::post('web-data-submit', [SettingController::class, 'webDataSubmit'])->name('settings.web-data-submit');
 
     Route::resource('states', StateController::class);
     Route::resource('cities', CityController::class);

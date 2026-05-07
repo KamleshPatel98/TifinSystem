@@ -164,7 +164,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="">
+                                    <a class="dropdown-item" href="{{ route('settings.web-data') }}">
                                         <i class="fa-solid fa-globe"></i> Web Data
                                     </a>
                                 </li>

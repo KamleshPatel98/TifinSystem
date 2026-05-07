@@ -24,11 +24,11 @@ class SettingSeeder extends Seeder
             ],
             [
                 'key_name' => 'app_phone',
-                'value' => '+91 1234567891',
+                'value' => '1234567891',
             ],
             [
                 'key_name' => 'app_alt_phone',
-                'value' => '+91 1234567892',
+                'value' => '1234567892',
             ],
             [
                 'key_name' => 'app_address',
@@ -41,6 +41,10 @@ class SettingSeeder extends Seeder
             [
                 'key_name' => 'page_limit',
                 'value' => '15',
+            ],
+            [
+                'key_name' => 'web_version',
+                'value' => '1.0',
             ],
             [
                 'key_name' => 'app_url',
