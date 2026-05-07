@@ -14,12 +14,18 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('mobile')->unique();
+            $table->char('mobile', 10)->unique();
+            $table->char('alt_mobile', 10)->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->enum('role', ['superadmin', 'vendor', 'customer'])->default('customer');
+
+            $table->enum('gender', ['male', 'female', 'other'])->nullable();
+            $table->date('dob')->nullable();
+            $table->string('profile_pic')->nullable();
+
+            $table->enum('role', ['superadmin', 'vendor', 'delivery_boy', 'customer'])->default('customer');
             $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
             $table->timestamps();
         });
