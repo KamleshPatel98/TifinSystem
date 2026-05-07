@@ -10,9 +10,19 @@ class StateController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $records = State::when(!empty($request->name), function ($q) use ($request) {
+            $q->where('name', 'like', '%' . $request->name . '%');
+        })
+            ->when(!empty($request->code), function ($q) use ($request) {
+                $q->where('code', $request->code);
+            })
+            ->when($request->is_active !== null, function ($q) use ($request) {
+                $q->where('is_active', $request->is_active);
+            })
+            ->paginate(getSetting('page_limit'));
+        return view('panel.geography.states.index', compact('records'));
     }
 
     /**
@@ -28,7 +38,13 @@ class StateController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:states,name',
+            'code' => 'required|string|max:255|unique:states,code',
+            'is_active' => 'required|boolean',
+        ]);
+        State::create($request->all());
+        return back()->with('success', 'State created successfully.');
     }
 
     /**
@@ -52,7 +68,13 @@ class StateController extends Controller
      */
     public function update(Request $request, State $state)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:states,name,' . $state->id,
+            'code' => 'required|string|max:255|unique:states,code,' . $state->id,
+            'is_active' => 'required|boolean',
+        ]);
+        $state->update($request->all());
+        return back()->with('success', 'State updated successfully.');
     }
 
     /**

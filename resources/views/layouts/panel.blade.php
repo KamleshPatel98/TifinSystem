@@ -72,6 +72,50 @@
                         Dashboard
                     </a>
                 </li>
+
+                @php
+                $geograhyRoutes = [
+                'states.*',
+                'cities.*',
+                'areas.*',
+                ];
+
+                $isGeographyActive = request()->routeIs($geograhyRoutes);
+                @endphp
+                <!-- Geography -->
+                <li class="nav-item">
+                    <a class="nav-link {{ $isGeographyActive ? '' : 'collapsed' }}"
+                        data-bs-toggle="collapse"
+                        href="#geoMenu"
+                        aria-expanded="false">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        Geography
+                        <i class="fa-solid fa-angle-down ms-auto"></i>
+                    </a>
+                    <ul class="collapse nav flex-column submenu {{ $isGeographyActive ? 'show' : '' }}"
+                        id="geoMenu"
+                        data-bs-parent="#sidebarAccordion">
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('states.*') ? 'active' : '' }}" href="{{ route('states.index') }}">
+                                <i class="fa-solid fa-map-pin"></i> State
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('cities.*') ? 'active' : '' }}" href="{{ route('cities.index') }}">
+                                <i class="fa-solid fa-building-columns"></i> City
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('areas.*') ? 'active' : '' }}" href="{{ route('areas.index') }}">
+                                <i class="fa-solid fa-street-view"></i> Area
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
             </ul>
         </aside>
 
