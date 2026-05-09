@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Vendor extends Model
 {
     protected $fillable = [
+        'owner_aadhar_card_front_photo',
+        'owner_aadhar_card_back_photo',
+        'owner_pan_card_photo',
         'bussiness_name',
         'logo',
         'phone_number',

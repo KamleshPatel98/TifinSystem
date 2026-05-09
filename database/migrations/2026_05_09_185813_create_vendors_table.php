@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('vendors', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('owner_aadhar_card_front_photo', 30);
+            $table->string('owner_aadhar_card_back_photo', 30);
+            $table->string('owner_pan_card_photo', 30)->nullable();
             $table->string('bussiness_name');
             $table->string('logo');
             $table->char('phone_number', 10);
