@@ -33,17 +33,22 @@
 
                 {{-- Search Fields --}}
                 <div class="col-md">
-                    <input type="text" name="first_name" id="first_name"
-                        placeholder="Search by first_name..." class="form-control" value="{{ request('first_name') }}">
+                    <input type="text" name="bussiness_name" id="bussiness_name"
+                        placeholder="Search by bussiness_name..." class="form-control" value="{{ request('bussiness_name') }}">
                 </div>
                 <div class="col-md">
-                    <input type="text" name="last_name" id="last_name"
-                        placeholder="Search by last_name..." class="form-control" value="{{ request('last_name') }}">
+                    <input type="text" name="phone_number" id="phone_number"
+                        placeholder="Search by phone_number..." class="form-control" value="{{ request('phone_number') }}">
                 </div>
                 <div class="col-md">
-                    <input type="text" name="mobile" id="mobile"
-                        placeholder="Search by mobile..." class="form-control" value="{{ request('mobile') }}">
+                    <select name="approved_status" class="form-select" id="approved_status">
+                        <option value="">All Status</option>
+                        <option value="pending" @selected(request('approved_status')=='pending' )>Pending</option>
+                        <option value="approved" @selected(request('approved_status')=='approved' )>Approved</option>
+                        <option value="rejected" @selected(request('approved_status')=='rejected' )>Rejected</option>
+                    </select>
                 </div>
+
                 <div class="col-md">
                     <select name="status" class="form-select" id="status">
                         <option value="">All Status</option>

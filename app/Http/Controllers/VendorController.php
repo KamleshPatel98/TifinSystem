@@ -14,19 +14,15 @@ class VendorController extends Controller
     private function vendorQuery(Request $request)
     {
         return Vendor::with('state:id,name', 'city:id,name')
-
             ->when($request->bussiness_name, function ($q) use ($request) {
                 $q->where('bussiness_name', 'like', '%' . $request->bussiness_name . '%');
             })
-
             ->when($request->phone_number, function ($q) use ($request) {
                 $q->where('phone_number', 'like', '%' . $request->phone_number . '%');
             })
-
             ->when($request->status, function ($q) use ($request) {
-                $q->where('status', $request->status);
+                $q->whereRelation('user','status', $request->status);
             })
-
             ->when($request->approved_status, function ($q) use ($request) {
                 $q->where('approved_status', $request->approved_status);
             });
