@@ -48,3 +48,30 @@ if(!function_exists('formatDateToYmd'))
         return date('Y-m-d', strtotime($date));
     }
 }
+
+if(!function_exists('formatDateTodmY'))
+{
+    function formatDateTodmY($date)
+    {
+        if(empty($date)){
+            return null;
+        }
+        return date('d-m-Y', strtotime($date));
+    }
+}
+
+if(!function_exists("formatDateTime"))
+{
+    function formatDateTime($datetime)
+    {
+        if (!$datetime) return 'N/A';
+        $date = \Carbon\Carbon::parse($datetime);
+        if ($date->isToday()) {
+            return 'Today ' . $date->format('h:i A');
+        }
+        if ($date->isTomorrow()) {
+            return 'Tomorrow ' . $date->format('h:i A');
+        }
+        return $date->format('d M Y h:i A');
+    }
+}

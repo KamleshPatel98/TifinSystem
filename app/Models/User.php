@@ -61,4 +61,9 @@ class User extends Authenticatable
             ? asset('storage/vendors/' . $this->profile_pic)
             : null;
     }
+
+    public function getDobAttribute($value)
+    {
+        return formatDateTodmY($value);
+    }
 }

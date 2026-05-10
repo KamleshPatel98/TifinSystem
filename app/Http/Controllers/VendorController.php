@@ -52,7 +52,7 @@ class VendorController extends Controller
 
     /**
     * Resignation Requests List
-    s*/
+    */
     public function resignationRequest(Request $request)
     {
         $records = $this->vendorQuery($request)
@@ -163,7 +163,7 @@ class VendorController extends Controller
      */
     public function show(Vendor $vendor)
     {
-        //
+        return view('panel.vendors.show', compact('vendor'));
     }
 
     /**
