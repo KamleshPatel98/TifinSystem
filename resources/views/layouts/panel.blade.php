@@ -118,6 +118,84 @@
                     </ul>
                 </li>
 
+
+
+                @php
+
+                $vendorRoutes = [
+                'vendors.*',
+                'vendor-mappings.*',
+                'vendor-service-mappings.*',
+                'vendor-penalty-incentives.*',
+                'vendor-restrictions.*',
+                ];
+
+                $isVendorActive = request()->routeIs($vendorRoutes);
+
+                @endphp
+
+                <li class="nav-item">
+                    <a class="nav-link {{ $isVendorActive ? '' : 'collapsed' }}"
+                        data-bs-toggle="collapse"
+                        href="#vendorMenu">
+                        <i class="fa-solid fa-handshake-angle"></i>
+                        Vendors
+                        <i class="fa-solid fa-angle-down ms-auto"></i>
+                    </a>
+
+                    <ul class="collapse nav flex-column submenu {{ $isVendorActive ? 'show' : '' }}"
+                        id="vendorMenu"
+                        data-bs-parent="#sidebarAccordion">
+
+                        {{-- Add Vendor --}}
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('vendors.create') ? 'active' : '' }}"
+                                href="{{ route('vendors.create') }}">
+
+                                <i class="fa-solid fa-person-circle-plus me-2"></i> Add New
+                            </a>
+                        </li>
+
+                        {{-- Joining Request --}}
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('vendors.joining.request') ? 'active' : '' }}"
+                                href="{{ route('vendors.joining.request') }}">
+
+                                <i class="fa-solid fa-user-clock me-2"></i> Joining Request
+                            </a>
+                        </li>
+
+                        {{-- Resignation Request --}}
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('vendors.resignation.request') ? 'active' : '' }}"
+                                href="">
+
+                                <i class="fa-solid fa-user-minus me-2"></i> Resignation Request
+                            </a>
+                        </li>
+
+                        {{-- Blocked Vendors --}}
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('vendors.blocked.list') ? 'active' : '' }}"
+                                href="{{ route('vendors.blocked.list') }}">
+
+                                <i class="fa-solid fa-user-lock me-2"></i> Blocked List
+                            </a>
+                        </li>
+
+                        {{-- All Vendors --}}
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('vendors.index') ? 'active' : '' }}"
+                                href="{{ route('vendors.index') }}">
+
+                                <i class="fa-solid fa-id-card me-2"></i> All List
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
             </ul>
         </aside>
 

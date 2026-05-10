@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Vendor extends Model
 {
     protected $fillable = [
+        'user_id',
         'owner_aadhar_card_front_photo',
         'owner_aadhar_card_back_photo',
         'owner_pan_card_photo',
@@ -41,5 +43,33 @@ class Vendor extends Model
     public function area()
     {
         return $this->belongsTo(Area::class);
+    }
+
+    public function getAadharFrontUrlAttribute()
+    {
+        return (!empty($this->owner_aadhar_card_front_photo) && Storage::exists('vendors/' . $this->owner_aadhar_card_front_photo))
+            ? asset('storage/vendors/' . $this->owner_aadhar_card_front_photo)
+            : null;
+    }
+
+    public function getAadharBackUrlAttribute()
+    {
+        return (!empty($this->owner_aadhar_card_back_photo) && Storage::exists('vendors/' . $this->owner_aadhar_card_back_photo))
+            ? asset('storage/vendors/' . $this->owner_aadhar_card_back_photo)
+            : null;
+    }
+
+    public function getPanCardUrlAttribute()
+    {
+        return (!empty($this->owner_pan_card_photo) && Storage::exists('vendors/' . $this->owner_pan_card_photo))
+            ? asset('storage/vendors/' . $this->owner_pan_card_photo)
+            : null;
+    }
+
+    public function getLogoUrlAttribute()
+    {
+        return (!empty($this->logo) && Storage::exists('vendors/' . $this->logo))
+            ? asset('storage/vendors/' . $this->logo)
+            : null;
     }
 }
