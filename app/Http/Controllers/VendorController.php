@@ -27,8 +27,8 @@ class VendorController extends Controller
                 $q->where('status', $request->status);
             })
 
-            ->when($request->approval_status, function ($q) use ($request) {
-                $q->where('approval_status', $request->approval_status);
+            ->when($request->approved_status, function ($q) use ($request) {
+                $q->where('approved_status', $request->approved_status);
             });
     }
     /**
@@ -48,21 +48,33 @@ class VendorController extends Controller
     public function joiningRequest(Request $request)
     {
         $records = $this->vendorQuery($request)
-            ->where('approval_status', 'pending')
+            ->where('approved_status', 'pending')
             ->paginate(getSetting('page_limit'));
         $list = 'Joining Request';
         return view('panel.vendors.index', compact('records', 'list'));
     }
 
     /**
-     * Blocked Vendors List
-     */
-    public function blockedList(Request $request)
+    * Resignation Requests List
+    s*/
+    public function resignationRequest(Request $request)
     {
         $records = $this->vendorQuery($request)
-            ->where('status', 'blocked')
+            ->whereNotNull('resignation_request_status')
             ->paginate(getSetting('page_limit'));
-        $list = 'Blocked';
+        $list = 'Resignation Request';
+        return view('panel.vendors.index', compact('records', 'list'));
+    }
+
+    /**
+     * suspended Vendors List
+     */
+    public function suspendedList(Request $request)
+    {
+        $records = $this->vendorQuery($request)
+            ->whereRelation('user','status', 'suspended')
+            ->paginate(getSetting('page_limit'));
+        $list = 'Suspended';
         return view('panel.vendors.index', compact('records', 'list'));
     }
 
@@ -96,7 +108,7 @@ class VendorController extends Controller
             'owner_aadhar_card_back_photo'=>'required|mimes:jpg,jpeg,png,webp|max:2048',
             'owner_pan_card_photo'=>'nullable|mimes:jpg,jpeg,png,webp|max:2048',
             'bussiness_name'=>'required|string|max:255',
-            'logo'=>'required|image',
+            'logo'=>'nullable|mimes:jpg,jpeg,png,webp|max:2048',
             'phone_number'=>'required|digits:10',
             'state_id'=>'required|exists:states,id',
             'city_id'=>'required|exists:cities,id',
@@ -139,7 +151,7 @@ class VendorController extends Controller
             $vendorData['user_id'] = $user->id;
             $vendor = Vendor::create($vendorData);
 
-            return back()->with('success', 'Vendor created successfully.');
+            return to_route('vendors.index')->with('success', 'Vendor created successfully.');
         } catch (\Exception $e) {
             Log::error('Vendor create error: ', [
                 'exception' => $e->getMessage(),
@@ -187,7 +199,7 @@ class VendorController extends Controller
             'owner_aadhar_card_back_photo'=>'nullable|mimes:jpg,jpeg,png,webp|max:2048',
             'owner_pan_card_photo'=>'nullable|mimes:jpg,jpeg,png,webp|max:2048',
             'bussiness_name'=>'required|string|max:255',
-            'logo'=>'nullable|image',
+            'logo'=>'nullable|mimes:jpg,jpeg,png,webp|max:2048',
             'phone_number'=>'required|digits:10',
             'state_id'=>'required|exists:states,id',
             'city_id'=>'required|exists:cities,id',

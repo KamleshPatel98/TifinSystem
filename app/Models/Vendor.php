@@ -23,6 +23,8 @@ class Vendor extends Model
         'latitude',
         'longitude',
         'approved_status',
+        'resignation_request_status',
+        'resgination_request_reason',
     ];
 
     public function user()

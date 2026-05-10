@@ -168,18 +168,18 @@
                         {{-- Resignation Request --}}
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('vendors.resignation.request') ? 'active' : '' }}"
-                                href="">
+                                href="{{ route('vendors.resignation.request') }}">
 
                                 <i class="fa-solid fa-user-minus me-2"></i> Resignation Request
                             </a>
                         </li>
 
-                        {{-- Blocked Vendors --}}
+                        {{-- Suspened Vendors --}}
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('vendors.blocked.list') ? 'active' : '' }}"
-                                href="{{ route('vendors.blocked.list') }}">
+                            <a class="nav-link {{ request()->routeIs('vendors.suspended.list') ? 'active' : '' }}"
+                                href="{{ route('vendors.suspended.list') }}">
 
-                                <i class="fa-solid fa-user-lock me-2"></i> Blocked List
+                                <i class="fa-solid fa-user-lock me-2"></i> Suspened List
                             </a>
                         </li>
 

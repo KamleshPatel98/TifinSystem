@@ -196,7 +196,7 @@
                     <!-- Logo -->
                     <div class="col-md-4 mt-3">
                         <label class="form-label fw-semibold">
-                            Logo <span class="text-danger">*</span>
+                            Logo 
                         </label>
 
                         <input type="file"

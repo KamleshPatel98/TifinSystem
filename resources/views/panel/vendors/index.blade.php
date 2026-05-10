@@ -78,7 +78,7 @@
                         <th class="text-center">City</th>
                         <th class="text-center">Approved Status</th>
                         <th class="text-center">Status</th>
-                        <th class="text-center" style="min-width: 270px;">Actions</th>
+                        <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="list-data">

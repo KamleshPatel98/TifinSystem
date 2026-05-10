@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('owner_aadhar_card_back_photo', 30);
             $table->string('owner_pan_card_photo', 30)->nullable();
             $table->string('bussiness_name');
-            $table->string('logo');
+            $table->string('logo')->nullable();
             $table->char('phone_number', 10);
             $table->foreignId('state_id')->constrained()->cascadeOnDelete();
             $table->foreignId('city_id')->constrained()->cascadeOnDelete();
@@ -28,6 +28,8 @@ return new class extends Migration
             $table->string('latitude', 40)->nullable();
             $table->string('longitude', 40)->nullable();
             $table->enum('approved_status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('resignation_request_status', ['pending', 'approved', 'rejected'])->nullable();
+            $table->string('resgination_request_reason')->nullable();
             $table->timestamps();
         });
     }

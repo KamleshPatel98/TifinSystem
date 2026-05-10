@@ -35,5 +35,6 @@ Route::middleware(['auth'])->prefix('panel')->group(function () {
     // Vendors
     Route::resource('vendors', VendorController::class);
     Route::get('vendors-joining-request', [VendorController::class, 'joiningRequest'])->name('vendors.joining.request');
-    Route::get('vendors-blocked-list', [VendorController::class, 'blockedList'])->name('vendors.blocked.list');
+    Route::get('vendors-resignation-request', [VendorController::class, 'resignationRequest'])->name('vendors.resignation.request');
+    Route::get('vendors-suspended-list', [VendorController::class, 'suspendedList'])->name('vendors.suspended.list');
 });
