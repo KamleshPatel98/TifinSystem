@@ -267,6 +267,8 @@
         </main>
     </div>
 
+    @stack('modals')
+
     <x-alert />
     <script>
         // csrf token

@@ -91,10 +91,12 @@
                     <tr>
                         <td class="text-end">{{ ($records->currentPage() -1) * $records->perPage() + $loop->iteration }}</td>
                         <td class="text-start">
-                            @if ($row->user->profile_url)
-                            <a href="{{ $row->user->profile_url }}" target="_blank">
-                                <img src="{{ $row->user->profile_url }}" alt="Vendor Image" width="50" height="50" class="rounded-circle" loading="lazy">
-                            </a>
+                            @if ($row->logo_url)
+                                <x-show-image 
+                                    :src="$row->logo_url"
+                                    alt="Vendor Logo Image"
+                                    class="rounded-circle shadow"
+                                />
                             @endif
                             {{ $row->bussiness_name ?? '' }}
                         </td>
