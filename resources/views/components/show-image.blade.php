@@ -1,8 +1,8 @@
 <img src="{{ $src }}"
     alt="{{ $alt ?? 'Image' }}"
     class="{{ $class ?? '' }}"
-    width="{{ $width ?? '' }}"
-    height="{{ $height ?? '' }}"
+    width="{{ $width }}"
+    height="{{ $height }}"
     style="object-fit:cover; cursor:pointer; {{ $style ?? '' }}"
     data-bs-toggle="modal"
     data-bs-target="#imageModal"
@@ -10,7 +10,6 @@
     loading="lazy">
 
 @push('modals')
-
     <!-- Image Modal -->
     <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
