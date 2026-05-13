@@ -16,7 +16,7 @@ class PlanSeeder extends Seeder
         if(Plan::count() == 0){
             $plans = [
                 [
-                    'user_id'     => 2,
+                    'vendor_id'   => 1,
                     'name'        => 'Monthly Breakfast Plan',
                     'duration'    => 'monthly',
                     'price'       => 1999.00,
@@ -26,7 +26,7 @@ class PlanSeeder extends Seeder
                     'is_active'   => true,
                 ],
                 [
-                    'user_id'     => 2,
+                    'vendor_id'   => 1,
                     'name'        => 'Weekly Lunch Plan',
                     'duration'    => 'weekly',
                     'price'       => 700.00,
@@ -36,7 +36,7 @@ class PlanSeeder extends Seeder
                     'is_active'   => true,
                 ],
                 [
-                    'user_id'     => 2,
+                    'vendor_id'   => 1,
                     'name'        => 'Monthly Dinner Plan',
                     'duration'    => 'monthly',
                     'price'       => 1500.00,
@@ -46,7 +46,7 @@ class PlanSeeder extends Seeder
                     'is_active'   => true,
                 ],
                 [
-                    'user_id'     => 2,
+                    'vendor_id'   => 1,
                     'name'        => 'Monthly Lunch, Dinner Meal Plan',
                     'duration'    => 'weekly',
                     'price'       => 2800.00,

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Plan extends Model
 {
     protected $fillable = [
-        'user_id',
+        'vendor_id',
         'name',
         'duration',
         'price',
@@ -19,6 +19,6 @@ class Plan extends Model
 
     public function vendor()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'vendor_id');
     }
 }
