@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PlanController extends Controller
 {
@@ -12,7 +13,8 @@ class PlanController extends Controller
      */
     public function index()
     {
-        //
+        $records = Plan::paginate(getSetting('page_limit'));
+        return view('panel.plans.index', compact('records'));
     }
 
     /**
@@ -28,7 +30,26 @@ class PlanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'duration' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'total_days' => 'required|integer',
+            'meal_time' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'is_active' => 'required|boolean',
+        ]);
+
+        $vendorId = Auth::user()->vendor->id;
+        $exist = Plan::where('vendor_id', $vendorId)
+            ->where('name', $request->name)
+            ->first();
+        if ($exist) {
+            return back()->with('error', 'Plan already exists.');
+        }
+
+        Plan::create(array_merge(['vendor_id' => $vendorId], $request->all()));
+        return back()->with('success', 'Plan created successfully.');
     }
 
     /**
@@ -52,7 +73,27 @@ class PlanController extends Controller
      */
     public function update(Request $request, Plan $plan)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'duration' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'total_days' => 'required|integer',
+            'meal_time' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'is_active' => 'required|boolean',
+        ]);
+
+        $vendorId = Auth::user()->vendor->id;
+        $exist = Plan::where('vendor_id', $vendorId)
+            ->where('name', $request->name)
+            ->where('id', '!=', $plan->id)
+            ->first();
+        if ($exist) {
+            return back()->with('error', 'Plan already exists.');
+        }
+
+        $plan->where('vendor_id', $vendorId)->update($validated);
+        return back()->with('success', 'Plan updated successfully.');
     }
 
     /**
@@ -60,6 +101,7 @@ class PlanController extends Controller
      */
     public function destroy(Plan $plan)
     {
-        //
+        $plan->where('vendor_id', Auth::user()->vendor->id)->delete();
+        return back()->with('success', 'Plan deleted successfully.');
     }
 }

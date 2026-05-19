@@ -4,6 +4,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\DropdownController;
+use App\Http\Controllers\PlanController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\VendorController;
@@ -37,4 +38,7 @@ Route::middleware(['auth'])->prefix('panel')->group(function () {
     Route::get('vendors-joining-request', [VendorController::class, 'joiningRequest'])->name('vendors.joining.request');
     Route::get('vendors-resignation-request', [VendorController::class, 'resignationRequest'])->name('vendors.resignation.request');
     Route::get('vendors-suspended-list', [VendorController::class, 'suspendedList'])->name('vendors.suspended.list');
+
+    // Plans
+    Route::resource('plans', PlanController::class);
 });

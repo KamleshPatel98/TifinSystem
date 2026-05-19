@@ -131,7 +131,6 @@
                 ];
 
                 $isVendorActive = request()->routeIs($vendorRoutes);
-
                 @endphp
 
                 <li class="nav-item">
@@ -196,6 +195,13 @@
                     </ul>
                 </li>
 
+                <!-- Plan -->
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('plans.*') ? 'active' : '' }}" href="{{ route('plans.index') }}">
+                        <i class="fa-solid fa-house-chimney"></i>
+                        Plan
+                    </a>
+                </li>
             </ul>
         </aside>
 
