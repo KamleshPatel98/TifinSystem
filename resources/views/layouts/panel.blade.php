@@ -202,6 +202,14 @@
                         Plan
                     </a>
                 </li>
+
+                <!-- Plan -->
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('customers.*') ? 'active' : '' }}" href="{{ route('customers.index') }}">
+                        <i class="fa-solid fa-house-chimney"></i>
+                        Customer
+                    </a>
+                </li>
             </ul>
         </aside>
 

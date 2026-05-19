@@ -8,42 +8,58 @@
     <div class="card-header bg-white border-bottom py-3 px-3 px-md-4">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
             <div>
-                <h5 class="mb-0 fw-semibold">Plan Management</h5>
-                <small class="text-muted">Create, edit, and manage system plans.</small>
+                <h5 class="mb-0 fw-semibold">Customer Management</h5>
+                <small class="text-muted">Create, edit, and manage system customers.</small>
             </div>
             <div class="d-flex flex-wrap gap-2">
-                <a href="#" class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#addModal">
-                    <i class="fa fa-plus me-2"></i> Add Plan
+                <a href="{{ route('customers.create') }}" class="btn btn-primary d-flex align-items-center">
+                    <i class="fa fa-plus me-2"></i> Add Customer
                 </a>
             </div>
         </div>
     </div>
 </div>
 
-{{-- Plan Table Card --}}
+{{-- Customer Table Card --}}
 <div class="card border-0 shadow rounded-0 bg-white">
     {{-- Card Header with Filter --}}
     <div class="card-header bg-white border-bottom py-3 px-3 px-md-4">
-        <form action="{{ route('plans.index') }}" method="GET">
+        <form action="{{ route('customers.index') }}" method="GET">
             <div class="row align-items-center">
                 <div class="col-md-2">
-                    <h5 class="mb-0 fw-semibold">🎯 Plan List</h5>
+                    <h5 class="mb-0 fw-semibold">🎯 Customer List</h5>
                 </div>
                 <div class="col-md-3">
                     <input type="text" name="name" value="{{ request('name') }}" placeholder="Search by name..." class="form-control">
                 </div>
                 <div class="col-md-2">
-                    <select name="is_active" class="form-select">
-                        <option value="">All Is Active</option>
-                        <option value="1" @selected(request('is_active')=='1' )>Active</option>
-                        <option value="0" @selected(request('is_active')=='0' )>Inactive</option>
+                    <input type="number" name="mobile" value="{{ request('mobile') }}" placeholder="Search by mobile..." class="form-control">
+                </div>
+                <div class="col-md-2">
+                    <select name="status" class="form-select">
+                        <option value="">All Status</option>
+
+                        <option value="active"
+                            @selected(request('status') == 'active')>
+                            Active
+                        </option>
+
+                        <option value="inactive"
+                            @selected(request('status') == 'inactive')>
+                            Inactive
+                        </option>
+
+                        <option value="suspended"
+                            @selected(request('status') == 'suspended')>
+                            Suspended
+                        </option>
                     </select>
                 </div>
                 <div class="col-md-3 d-flex gap-2">
                     <button type="submit" class="btn btn-primary">
                         <i class="fa fa-search me-1"></i> Search
                     </button>
-                    <a href="{{ route('plans.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('customers.index') }}" class="btn btn-outline-secondary">
                         <i class="fa fa-refresh me-1"></i> Reset
                     </a>
                 </div>
@@ -59,12 +75,11 @@
                     <tr>
                         <th class="text-end">SN.</th>
                         <th>Name</th>
-                        <th>Duration</th>
-                        <th>Price</th>
-                        <th>Total Days</th>
-                        <th>Meal Time</th>
-                        <th>Description</th>
-                        <th class="text-center">Is Active</th>
+                        <th>Mobile</th>
+                        <th>Alt Mobile</th>
+                        <th>Email</th>
+                        <th>Gender</th>
+                        <th class="text-center">Status</th>
                         <th class="text-center">Action</th>
                     </tr>
                 </thead>
@@ -73,21 +88,28 @@
                     <tr>
                         <td class="text-end"> {{ ($records->currentPage() - 1) * $records->perPage() + $loop->iteration }}</td>
                         <td>{{ $row->name ?? '' }}</td>
-                        <td>{{ $row->duration ?? '' }}</td>
-                        <td>₹{{ number_format($row->price ?? 0, 2) }}</td>
-                        <td>{{ $row->total_days ?? '' }}</td>
-                        <td>{{ $row->meal_time ?? '' }}</td>
-                        <td>{{ $row->description ?? '' }}</td>
-                        <td class="text-center">@include('includes.is-active')</td>
+                        <td>{{ $row->mobile ?? '' }}</td>
+                        <td>{{ $row->alt_mobile ?? '' }}</td>
+                        <td>{{ $row->email ?? '' }}</td>
+                        <td>{{ ucfirst($row->gender ?? '') }}</td>
+                        <td class="text-center">
+                            @if($row->status == 'active')
+                                <span class="badge bg-success">Active</span>
+                            @elseif($row->status == 'inactive')
+                                <span class="badge bg-secondary">Inactive</span>
+                            @elseif($row->status == 'suspended')
+                                <span class="badge bg-danger">Suspended</span>
+                            @endif
+                        </td>
                         <td class="text-center d-flex justify-content-center">
-                            <a href="#" class="btn btn-sm btn-outline-warning me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal{{ $row->id }}">
+                            <a href="{{ route('customers.edit', $row->id) }}" class="btn btn-sm btn-outline-warning me-1" title="Edit">
                                 <i class="fa fa-edit"></i>
                             </a>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="text-center">No Plan Found!</td>
+                        <td colspan="5" class="text-center">No Customer Found!</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -99,15 +121,15 @@
     </div>
 </div>
 
-{{-- Add Plan Modal --}}
+{{-- Add Customer Modal --}}
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addStateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addStateModalLabel">Add New Plan <i class="fa fa-plus"></i></h5>
+                <h5 class="modal-title" id="addStateModalLabel">Add New Customer <i class="fa fa-plus"></i></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('plans.store') }}" method="POST">
+            <form action="{{ route('customers.store') }}" method="POST">
                 @csrf
                 <div class="modal-body row">
                     <input type="hidden" name="form_mode" value="create">
@@ -228,16 +250,16 @@
     </div>
 </div>
 
-{{-- Edit Plan Modal --}}
+{{-- Edit Customer Modal --}}
 @foreach($records as $row)
 <div class="modal fade" id="editModal{{ $row->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $row->id }}" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel{{ $row->id }}">Edit Plan <i class="fa fa-edit"></i></h5>
+                <h5 class="modal-title" id="editModalLabel{{ $row->id }}">Edit Customer <i class="fa fa-edit"></i></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('plans.update', $row->id) }}" method="POST">
+            <form action="{{ route('customers.update', $row->id) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="modal-body row">

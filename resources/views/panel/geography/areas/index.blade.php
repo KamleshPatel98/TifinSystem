@@ -73,7 +73,7 @@
                 <tbody>
                     @forelse ($records as $row)
                     <tr>
-                        <td class="text-end">{{ $loop->iteration }}</td>
+                        <td class="text-end"> {{ ($records->currentPage() - 1) * $records->perPage() + $loop->iteration }}</td>
                         <td>{{ $row->state->name ?? '' }}</td>
                         <td>{{ $row->city->name ?? '' }}</td>
                         <td>{{ $row->name ?? '' }}</td>

@@ -70,7 +70,7 @@
                 <tbody>
                     @forelse ($records as $row)
                     <tr>
-                        <td class="text-end">{{ $loop->iteration }}</td>
+                        <td class="text-end"> {{ ($records->currentPage() - 1) * $records->perPage() + $loop->iteration }}</td>
                         <td>{{ $row->name ?? '' }}</td>
                         <td>{{ $row->code ?? '' }}</td>
                         <td class="text-center">@include('includes.is-active')</td>

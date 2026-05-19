@@ -62,6 +62,14 @@ class User extends Authenticatable
             : null;
     }
 
+     public function getCustomerProfileUrlAttribute()
+    {
+        return (!empty($this->profile_pic) && Storage::exists('customers/' . $this->profile_pic))
+            ? asset('storage/customers/' . $this->profile_pic)
+            : null;
+    }
+
+
     public function getDobAttribute($value)
     {
         return formatDateTodmY($value);
