@@ -59,7 +59,11 @@
                     <tr>
                         <th class="text-end">SN.</th>
                         <th>Name</th>
-                        <th>Code</th>
+                        <th>Duration</th>
+                        <th>Price</th>
+                        <th>Total Days</th>
+                        <th>Meal Time</th>
+                        <th>Description</th>
                         <th class="text-center">Is Active</th>
                         <th class="text-center">Action</th>
                     </tr>
@@ -69,7 +73,11 @@
                     <tr>
                         <td class="text-end">{{ $loop->iteration }}</td>
                         <td>{{ $row->name ?? '' }}</td>
-                        <td>{{ $row->code ?? '' }}</td>
+                        <td>{{ $row->duration ?? '' }}</td>
+                        <td>₹{{ number_format($row->price ?? 0, 2) }}</td>
+                        <td>{{ $row->total_days ?? '' }}</td>
+                        <td>{{ $row->meal_time ?? '' }}</td>
+                        <td>{{ $row->description ?? '' }}</td>
                         <td class="text-center">@include('includes.is-active')</td>
                         <td class="text-center d-flex justify-content-center">
                             <a href="#" class="btn btn-sm btn-outline-warning me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal{{ $row->id }}">

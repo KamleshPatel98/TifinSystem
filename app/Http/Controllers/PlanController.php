@@ -11,9 +11,16 @@ class PlanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $records = Plan::paginate(getSetting('page_limit'));
+        $records = Plan::when($request->name !== null, function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->name . '%');
+            })
+            ->when($request->is_active !== null, function ($q) use ($request) {
+                $q->where('is_active', $request->is_active);
+            })
+            ->where('vendor_id', Auth::user()->vendor->id)
+            ->paginate(getSetting('page_limit'));
         return view('panel.plans.index', compact('records'));
     }
 
@@ -92,7 +99,7 @@ class PlanController extends Controller
             return back()->with('error', 'Plan already exists.');
         }
 
-        $plan->where('vendor_id', $vendorId)->update($validated);
+        Plan::where('id',$plan->id)->where('vendor_id', $vendorId)->update($validated);
         return back()->with('success', 'Plan updated successfully.');
     }
 
