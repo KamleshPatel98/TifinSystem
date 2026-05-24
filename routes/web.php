@@ -42,7 +42,8 @@ Route::middleware(['auth'])->prefix('panel')->group(function () {
 
     // Customer
     Route::resource('customers', CustomerController::class);
-
+    Route::post('customers-address-store', [CustomerController::class, 'addressStore'])->name('customers.address.store');
+    
     // Plans
     Route::resource('plans', PlanController::class);
 });

@@ -142,17 +142,106 @@
                                 <div class="modal fade" id="addAddress" tabindex="-1" aria-labelledby="addAddressLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="addAddressLabel">Add Address</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                ...
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary">Save</button>
-                                            </div>
+                                            <form action="{{ route('customers.address.store') }}" method="POST">
+                                                @csrf
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="addAddressLabel">Add Address</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+
+                                                        <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+
+                                                        <!-- State -->
+                                                        <div class="col-md-4 mb-3">
+                                                            <label class="form-label">State</label>
+                                                            <select name="state_id" id="state_id" class="form-select" onchange="getCityList()">
+                                                                <option value="">Select State</option>
+                                                                
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- City -->
+                                                        <div class="col-md-4 mb-3">
+                                                            <label class="form-label">City</label>
+                                                            <select name="city_id" id="city_id" class="form-select" onchange="getAreaList()">
+                                                                <option value="">Select City</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- Area -->
+                                                        <div class="col-md-4 mb-3">
+                                                            <label class="form-label">Area</label>
+                                                            <select name="area_id" id="area_id" class="form-select">
+                                                                <option value="">Select Area</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- Pincode -->
+                                                        <div class="col-md-4 mb-3">
+                                                            <label class="form-label">Pincode</label>
+                                                            <input type="text" 
+                                                                name="pincode" 
+                                                                class="form-control" 
+                                                                maxlength="6"
+                                                                placeholder="Enter Pincode">
+                                                        </div>
+
+                                                        <!-- Latitude -->
+                                                        <div class="col-md-4 mb-3">
+                                                            <label class="form-label">Latitude</label>
+                                                            <input type="text" 
+                                                                name="latitude" 
+                                                                class="form-control"
+                                                                placeholder="Enter Latitude">
+                                                        </div>
+
+                                                        <!-- Longitude -->
+                                                        <div class="col-md-4 mb-3">
+                                                            <label class="form-label">Longitude</label>
+                                                            <input type="text" 
+                                                                name="longitude" 
+                                                                class="form-control"
+                                                                placeholder="Enter Longitude">
+                                                        </div>
+
+                                                        <!-- Address -->
+                                                        <div class="col-md-12 mb-3">
+                                                            <label class="form-label">Address</label>
+                                                            <textarea name="address"
+                                                                    rows="3"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Full Address"></textarea>
+                                                        </div>
+
+                                                        <!-- Address Type -->
+                                                        <div class="col-md-4 mb-3">
+                                                            <label class="form-label">Address Type</label>
+
+                                                            <select name="type" class="form-select" required>
+                                                                <option value="home">Home</option>
+                                                                <option value="work">Work</option>
+                                                                <option value="other">Other</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- Default Address -->
+                                                        <div class="col-md-4 mb-3">
+                                                            <label class="form-label">Default Address</label>
+                                                            <select name="is_default" class="form-select">
+                                                                <option value="no">No</option>
+                                                                <option value="yes">Yes</option>
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -166,11 +255,7 @@
                                                         
                                                         <h6 class="fw-bold mb-2">
                                                             {{ ucfirst($address->type) }}
-                                                            @if($address->is_active)
-                                                                <span class="badge bg-success float-end">Active</span>
-                                                            @else
-                                                                <span class="badge bg-secondary float-end">Inactive</span>
-                                                            @endif
+                                                            <span class="float-end badge {{ $address->is_default ? 'bg-success' : 'bg-muted' }}">{{ ucfirst($address->is_default) }}</span>
                                                         </h6>
 
                                                         <p class="mb-1"><b>State:</b> {{ $address->state->name ?? '' }}</p>
@@ -207,3 +292,29 @@
 
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        @include('includes.geography-create-ajax')
+    </script>
+    <script>
+        $(document).ready(function () {
+            let params = new URLSearchParams(window.location.search);
+            let activeTab = params.get('tab');
+
+            if (activeTab) {
+                // remove default active
+                $('.nav-tabs .nav-link').removeClass('active');
+                $('.tab-pane').removeClass('show active');
+
+                // find matching button using href
+                let $tab = $('.nav-tabs a[href="#' + activeTab + '"]');
+
+                if ($tab.length) {
+                    let tab = new bootstrap.Tab($tab[0]);
+                    tab.show(); // ✅ open tab from URL
+                }
+            }
+        });
+    </script>
+@endpush

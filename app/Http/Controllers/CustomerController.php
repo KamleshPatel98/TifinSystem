@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CustomerAddress;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,24 @@ use Illuminate\Support\Facades\Log;
 
 class CustomerController extends Controller
 {
+    private function redirectWithTab($tab)
+    {
+        $url = url()->previous();
+
+        // parse existing query params
+        $query = parse_url($url, PHP_URL_QUERY);
+        parse_str($query, $params);
+
+        // set / replace tab
+        $params['tab'] = $tab;
+
+        // rebuild URL
+        $baseUrl = strtok($url, '?');
+        $newUrl = $baseUrl . '?' . http_build_query($params);
+
+        return $newUrl;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -133,5 +152,51 @@ class CustomerController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function addressStore(Request $request)
+    {
+        $request->validate([
+            'customer_id' => 'required|exists:users,id',
+            'state_id'    => 'required|exists:states,id',
+            'city_id'     => 'required|exists:cities,id',
+            'area_id'     => 'required|exists:areas,id',
+            'pincode'     => 'required|digits:6',
+            'address'     => 'required|string|max:500',
+            'latitude'    => 'nullable|string|max:40',
+            'longitude'   => 'nullable|string|max:40',
+            'is_default'  => 'required|in:yes,no',
+        ]);
+
+        $url = $this->redirectWithTab('addresses');
+        try {
+            // If selected as default then remove previous default
+            if ($request->is_default == 'yes') {
+                CustomerAddress::where('user_id', $request->customer_id)
+                    ->update([
+                        'is_default' => 'no'
+                    ]);
+            }
+
+            $address = CustomerAddress::create([
+                'user_id'     => $request->customer_id,
+                'state_id'    => $request->state_id,
+                'city_id'     => $request->city_id,
+                'area_id'     => $request->area_id,
+                'pincode'     => $request->pincode,
+                'address'     => $request->address,
+                'latitude'    => $request->latitude,
+                'longitude'   => $request->longitude,
+                'is_default'  => $request->is_default ?? 'no',
+            ]);
+            return redirect($url)->with('success', 'Address added successfully!');
+
+        } catch (\Exception $e) {
+            Log::error('Customer Address Store Error', [
+                'message' => $e->getMessage(),
+                'line'    => $e->getLine(),
+            ]);
+            return redirect($url)->with('error', 'Something went wrong!');
+        }
     }
 }
