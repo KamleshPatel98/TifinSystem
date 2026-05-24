@@ -465,10 +465,10 @@
                                                                         Date
                                                                     </label>
 
-                                                                    <input type="date"
+                                                                    <input type="text"
                                                                         name="date"
                                                                         value="{{ date('Y-m-d') }}"
-                                                                        class="form-control"
+                                                                        class="form-control datepicker"
                                                                         required>
                                                                 </div>
 

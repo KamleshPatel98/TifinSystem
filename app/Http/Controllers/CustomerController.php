@@ -176,12 +176,30 @@ class CustomerController extends Controller
 
         $url = $this->redirectWithTab('subscriptions');
         try {
-
             $plan = Plan::findOrFail($request->plan_id);
 
             // End Date Calculate
             $startDate = Carbon::parse($request->start_date);
             $endDate   = $startDate->copy()->addDays($plan->total_days - 1);
+
+            // Check Existing Subscription Date Overlap
+            $alreadyExists = Subscription::where('customer_id', $request->customer_id)
+                ->where('plan_id', $request->plan_id)
+                ->where(function ($query) use ($startDate, $endDate) {
+                    $query->whereBetween('start_date', [$startDate, $endDate])
+                        ->orWhereBetween('end_date', [$startDate, $endDate])
+                        ->orWhere(function ($q) use ($startDate, $endDate) {
+                            $q->where('start_date', '<=', $startDate)
+                                ->where('end_date', '>=', $endDate);
+
+                        });
+
+                })
+                ->exists();
+
+            if ($alreadyExists) {
+                return back()->with('error', 'Same plan already exists for selected date range.');
+            }
 
             // Payment Status
             $paymentStatus = 'pending';
