@@ -93,6 +93,8 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="row">
+                                                        <h6 class="fw-bold">Plan Details</h6>
+                                                        <hr>
 
                                                         <input type="hidden" name="customer_id" value="{{ $customer->id }}">
 
@@ -100,7 +102,7 @@
                                                         <div class="col-md-6 mb-3">
                                                             <label class="form-label">Plan</label>
 
-                                                            <select name="plan_id" class="form-select" required onchange="setPrice()">
+                                                            <select name="plan_id" class="form-select" required onchange="setPrice(this)">
                                                                 <option value="">Select Plan</option>
 
                                                                 @foreach($plans as $plan)
@@ -140,6 +142,7 @@
                                                             <input type="number"
                                                                 step="0.01"
                                                                 name="offer_price"
+                                                                id="offer_price"
                                                                 class="form-control"
                                                                 placeholder="Enter Offer Price"
                                                                 required>
@@ -152,14 +155,19 @@
                                                             <input type="text"
                                                                 name="start_date"
                                                                 class="form-control datepicker"
+                                                                autocomplete="OFF"
                                                                 required>
                                                         </div>
 
                                                     </div>
-                                                    <div class="row">
+
+                                                    
+                                                    <div class="row mt-3">
+                                                        <h6 class="fw-bold">Payment Details</h6>
+                                                        <hr>
 
                                                         <!-- Payment Mode -->
-                                                        <div class="col-md-6 mb-3">
+                                                        <div class="col-md-4 mb-3">
                                                             <label class="form-label">Payment Mode</label>
 
                                                             <select name="payment_mode_id" class="form-select" required>
@@ -174,25 +182,27 @@
                                                         </div>
 
                                                         <!-- Amount -->
-                                                        <div class="col-md-3 mb-3">
+                                                        <div class="col-md-4 mb-3">
                                                             <label class="form-label">Amount</label>
 
                                                             <input type="number"
                                                                 step="0.01"
                                                                 name="amount"
+                                                                id="amount"
                                                                 class="form-control"
                                                                 placeholder="Enter Amount"
                                                                 required>
                                                         </div>
 
                                                         <!-- Payment Date -->
-                                                        <div class="col-md-3 mb-3">
+                                                        <div class="col-md-4 mb-3">
                                                             <label class="form-label">Date</label>
 
                                                             <input type="text"
                                                                 name="date"
                                                                 class="form-control datepicker"
-                                                                value="{{ date('Y-m-d') }}"
+                                                                value="{{ date('d-m-Y') }}"
+                                                                autocomplete="OFF"
                                                                 required>
                                                         </div>
 
@@ -837,6 +847,78 @@
             }
         });
     </script>
+
+    <script>
+
+    $(document).ready(function () {
+
+        // Plan Change
+        $('select[name="plan_id"]').on('change', function () {
+
+            let price = parseFloat(
+                $(this).find(':selected').data('price')
+            ) || 0;
+
+            // Set Values
+            $('#offer_price').val(price);
+            $('#amount').val(price);
+
+            // Set Max Attribute
+            $('#offer_price').attr('max', price);
+            $('#amount').attr('max', price);
+
+        });
+
+        // Offer Price Validation
+        $('#offer_price').on('input', function () {
+
+            let mainPrice = parseFloat(
+                $('select[name="plan_id"] option:selected').data('price')
+            ) || 0;
+
+            let offerPrice = parseFloat($(this).val()) || 0;
+
+            // Offer Price > Main Price
+            if (offerPrice > mainPrice) {
+
+                $(this).val(mainPrice);
+
+                offerPrice = mainPrice;
+            }
+
+            // Amount Max = Offer Price
+            $('#amount').attr('max', offerPrice);
+
+            // Amount Auto Adjust
+            if (
+                parseFloat($('#amount').val()) > offerPrice
+            ) {
+
+                $('#amount').val(offerPrice);
+            }
+
+        });
+
+        // Amount Validation
+        $('#amount').on('input', function () {
+
+            let offerPrice = parseFloat(
+                $('#offer_price').val()
+            ) || 0;
+
+            let amount = parseFloat($(this).val()) || 0;
+
+            // Amount > Offer Price
+            if (amount > offerPrice) {
+
+                $(this).val(offerPrice);
+            }
+
+        });
+
+    });
+
+</script>
 @endpush
 
 <x-datepicker />
