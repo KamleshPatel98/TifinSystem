@@ -1,8 +1,8 @@
 :root {
-  --primary-start: #ff7a18;
-  --primary-end: #ffb347;
+  --primary-start: #0d123f;
+  --primary-end: #0d0a24;
   --primary-gradient: linear-gradient(135deg, var(--primary-start), var(--primary-end));
-  --primary-text: #ff7a18;
+  --primary-text: #07071f;
   --secondary-text: #1b1b1b;
   --bg-light: #f5f7fb;
 }

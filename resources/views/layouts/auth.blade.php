@@ -22,7 +22,7 @@
         }
 
         .brand-section {
-            background: linear-gradient(135deg, #ff7a18, #ffb347);
+            background: linear-gradient(135deg, #2b3591, #221c55);
             color: #fff;
             text-align: center;
             padding: 40px 20px;
@@ -38,7 +38,7 @@
         }
 
         .btn-orange {
-            background: linear-gradient(135deg, #ff7a18, #ffb347);
+            background: linear-gradient(135deg, #151c5c, #221c55);
             border: none;
             color: #fff;
             border-radius: 25px;
@@ -92,16 +92,16 @@
     <div class="container min-vh-100 d-flex align-items-center justify-content-center py-4">
         <div class="row login-card bg-white w-100" style="max-width: 900px;">
 
-            <!-- Form Section -->
-            <div class="col-12 col-md-6 form-section">
-                @yield('content')
-            </div>
-
             <!-- Branding Section (Same as your laptop view) -->
             <div class="col-md-6 brand-section d-none d-md-flex flex-column justify-content-center">
                 <h5 class="mb-2">Welcome to</h5>
                 <h3 class="fw-bold mb-4">{{ getSetting('app_name') }} Company</h3>
                 <img src="{{ asset('assets/images/tifin.jpg') }}" alt="Tifin Image" class="img-fluid mx-auto">
+            </div>
+
+            <!-- Form Section -->
+            <div class="col-12 col-md-6 form-section">
+                @yield('content')
             </div>
 
         </div>
