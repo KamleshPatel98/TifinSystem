@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\CustomerAddress;
+use App\Models\Payment;
+use App\Models\PaymentMode;
+use App\Models\Plan;
+use App\Models\Subscription;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -101,7 +106,9 @@ class CustomerController extends Controller
      */
     public function show(User $customer)
     {
-        return view('panel.customers.show', compact('customer'));
+        $plans = Plan::select('id', 'name','price','total_days','meal_time')->where('is_active', 1)->get();
+        $paymentModes = PaymentMode::where('is_active', 1)->pluck('name','id');
+        return view('panel.customers.show', compact('customer', 'plans', 'paymentModes'));
     }
 
     /**
@@ -152,6 +159,72 @@ class CustomerController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function planStore(Request $request)
+    {
+        $request->validate([
+            'plan_id'              => 'required|exists:plans,id',
+            'customer_address_id'  => 'required|exists:customer_addresses,id',
+            'offer_price'          => 'required|numeric|min:0',
+            'start_date'           => 'required|date',
+
+            'payment_mode_id'      => 'required|exists:payment_modes,id',
+            'amount'               => 'required|numeric|min:0',
+            'date'                 => 'required|date',
+        ]);
+
+        $url = $this->redirectWithTab('subscriptions');
+        try {
+
+            $plan = Plan::findOrFail($request->plan_id);
+
+            // End Date Calculate
+            $startDate = Carbon::parse($request->start_date);
+            $endDate   = $startDate->copy()->addDays($plan->total_days - 1);
+
+            // Payment Status
+            $paymentStatus = 'pending';
+
+            if ($request->amount >= $request->offer_price) {
+                $paymentStatus = 'paid';
+            } elseif ($request->amount > 0) {
+                $paymentStatus = 'partial';
+            }
+
+            // Subscription Create
+            $subscription = Subscription::create([
+                'vendor_id'           => $plan->vendor_id,
+                'customer_id'         => $request->customer_id,
+                'plan_id'             => $plan->id,
+                'customer_address_id' => $request->customer_address_id,
+                'price'               => $plan->price,
+                'offer_price'         => $request->offer_price,
+                'start_date'          => $startDate,
+                'end_date'            => $endDate,
+                'paymwnt_status'      => $paymentStatus,
+                'is_active'           => true,
+            ]);
+
+            // Payment Create
+            Payment::create([
+                'subscription_id' => $subscription->id,
+                'payment_mode_id' => $request->payment_mode_id,
+                'vendor_id'       => $plan->vendor_id,
+                'customer_id'     => $request->customer_id,
+                'amount'          => $request->amount,
+                'date'            => Carbon::parse($request->date),
+            ]);
+            return redirect($url)->with('success', 'Subscription added successfully!');
+
+        } catch (\Exception $e) {
+            Log::error('Subscription Store Error', [
+                'message' => $e->getMessage(),
+                'line'    => $e->getLine(),
+            ]);
+
+            return redirect($url)->with('error', 'Something went wrong!');
+        }
     }
 
     public function addressStore(Request $request)

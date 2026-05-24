@@ -69,67 +69,195 @@
                     <div class="card shadow border-0 rounded-3 mb-4">
                         <div class="card-header bg-white border-bottom">
                             <ul class="nav nav-tabs card-header-tabs" role="tablist">
-                                <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#subscription">Subscription</a></li>
+                                <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#subscriptions">Subscription</a></li>
                                 <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#addresses">Addresses</a></li>
                             </ul>
                         </div>
                         <div class="card-body tab-content" style="min-height: 375px;">
 
                             {{-- Subscription Tab --}}
-                            <div class="tab-pane fade show active" id="subscription">
+                            <div class="tab-pane fade show active" id="subscriptions">
 
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPlanModal">
                                     Add Plan
                                 </button>
-
-                                <!-- Modal -->
                                 <div class="modal fade" id="addPlanModal" tabindex="-1" aria-labelledby="addPlanLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="addPlanLabel">Add Plan</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                ...
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary">Save</button>
-                                            </div>
+                                            <form action="{{ route('customers.plan.store') }}" method="POST">
+                                                @csrf
+
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="addPlanLabel">Add Plan</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+
+                                                        <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+
+                                                        <!-- Plan -->
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">Plan</label>
+
+                                                            <select name="plan_id" class="form-select" required onchange="setPrice()">
+                                                                <option value="">Select Plan</option>
+
+                                                                @foreach($plans as $plan)
+                                                                    <option value="{{ $plan->id }}"
+                                                                        data-price="{{ $plan->price }}">
+                                                                        {{ $plan->name }} 
+                                                                        | ₹{{ number_format($plan->price, 2) }} 
+                                                                        | {{ $plan->total_days }} Days 
+                                                                        | {{ $plan->meal_time }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- Customer Address -->
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">Customer Address</label>
+
+                                                            <select name="customer_address_id" class="form-select" required>
+                                                                <option value="">Select Address</option>
+
+                                                                @foreach($customer->addresses as $address)
+                                                                    <option value="{{ $address->id }}">
+                                                                        {{ Str::limit($address->address, 40) }}
+                                                                        - {{ ucfirst($address->type) }}
+                                                                        - {{ $address->city->name ?? '' }}
+                                                                        - {{ $address->pincode }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- Offer Price -->
+                                                        <div class="col-md-4 mb-3">
+                                                            <label class="form-label">Offer Price</label>
+
+                                                            <input type="number"
+                                                                step="0.01"
+                                                                name="offer_price"
+                                                                class="form-control"
+                                                                placeholder="Enter Offer Price"
+                                                                required>
+                                                        </div>
+
+                                                        <!-- Start Date -->
+                                                        <div class="col-md-4 mb-3">
+                                                            <label class="form-label">Start Date</label>
+
+                                                            <input type="text"
+                                                                name="start_date"
+                                                                class="form-control datepicker"
+                                                                required>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row">
+
+                                                        <!-- Payment Mode -->
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">Payment Mode</label>
+
+                                                            <select name="payment_mode_id" class="form-select" required>
+                                                                <option value="">Select Payment Mode</option>
+
+                                                                @foreach($paymentModes as $id => $name)
+                                                                    <option value="{{ $id }}">
+                                                                        {{ $name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- Amount -->
+                                                        <div class="col-md-3 mb-3">
+                                                            <label class="form-label">Amount</label>
+
+                                                            <input type="number"
+                                                                step="0.01"
+                                                                name="amount"
+                                                                class="form-control"
+                                                                placeholder="Enter Amount"
+                                                                required>
+                                                        </div>
+
+                                                        <!-- Payment Date -->
+                                                        <div class="col-md-3 mb-3">
+                                                            <label class="form-label">Date</label>
+
+                                                            <input type="text"
+                                                                name="date"
+                                                                class="form-control datepicker"
+                                                                value="{{ date('Y-m-d') }}"
+                                                                required>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                </div>
+
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="y-scroll pe-2 mt-2">
-                                            
-                                    <div class="card shadow-sm h-100">
-                                        <div class="card-body">
-                                            <h6 class="fw-bold mb-3">Subscription Info</h6>
+                                    @foreach ($customer->subscriptions as $subscription)
+                                        <div class="card shadow-sm mb-3">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                                    <div>
+                                                        <h5 class="fw-bold mb-1">
+                                                            {{ $subscription->plan->name ?? 'N/A' }}
+                                                        </h5>
+                                                        <span class="badge bg-success">
+                                                            {{ ucfirst($subscription->paymwnt_status) }}
+                                                        </span>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <h5 class="text-primary mb-0">
+                                                            ₹{{ number_format($subscription->offer_price, 2) }}
+                                                        </h5>
+                                                        <small class="text-muted">
+                                                            {{ $subscription->start_date }}
+                                                            -
+                                                            {{ $subscription->end_date }}
+                                                        </small>
+                                                    </div>
+                                                </div>
 
-                                            <p>
-                                                <b>Source:</b>
-                                                <span class="badge bg-primary">
-                                                    {{ ucfirst($customer->registration_source) }}
-                                                </span>
-                                            </p>
-
-                                            <p>
-                                                <b>First Login:</b><br>
-                                                {{ $customer->first_login_date 
-                                                    ? $customer->first_login_date->format('d M Y, h:i A') 
-                                                    : 'N/A' }}
-                                            </p>
-
-                                            <p>
-                                                <b>Last Active:</b><br>
-                                                {{ $customer->last_active_date 
-                                                    ? $customer->last_active_date->format('d M Y, h:i A') 
-                                                    : 'N/A' }}
-                                            </p>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="mb-1">
+                                                            <b>Address:</b>
+                                                            {{ $subscription->customerAddress->address ?? 'N/A' }}
+                                                        </p>
+                                                        <p class="mb-1">
+                                                            <b>Plan Days:</b>
+                                                            {{ $subscription->plan->total_days ?? 0 }} Days
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p class="mb-1">
+                                                            <b>Total Payments:</b>
+                                                            {{ $subscription->payments->count() }}
+                                                        </p>
+                                                        <p class="mb-1">
+                                                            <b>Paid Amount:</b>
+                                                            ₹{{ number_format($subscription->payments->sum('amount'), 2) }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-
+                                    @endforeach
                                 </div>
                             </div>
 
@@ -318,3 +446,5 @@
         });
     </script>
 @endpush
+
+<x-datepicker />

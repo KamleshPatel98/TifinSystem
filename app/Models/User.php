@@ -84,4 +84,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(CustomerAddress::class  , 'user_id');
     }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class  , 'customer_id');
+    }
 }
