@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             StateSeeder::class,
             CitySeeder::class,
             AreaSeeder::class,
+            PaymentModeSeeder::class,
             UserSeeder::class,
             VendorSeeder::class,
             PlanSeeder::class,
