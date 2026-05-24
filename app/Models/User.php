@@ -79,4 +79,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Vendor::class  , 'user_id');
     }
+
+    public function addresses()
+    {
+        return $this->hasMany(CustomerAddress::class  , 'user_id');
+    }
 }

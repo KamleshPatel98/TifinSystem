@@ -1,6 +1,6 @@
 @extends('layouts.panel')
 
-@section('title', 'Dashboard')
+@section('title', 'Customer Management')
 
 @section('content')
 {{-- Page Header Card --}}
@@ -102,6 +102,9 @@
                             @endif
                         </td>
                         <td class="text-center d-flex justify-content-center">
+                            <a href="{{ route('customers.show', $row->id) }}" class="btn btn-sm btn-outline-info me-1" title="View">
+                                <i class="fa fa-eye"></i>
+                            </a>
                             <a href="{{ route('customers.edit', $row->id) }}" class="btn btn-sm btn-outline-warning me-1" title="Edit">
                                 <i class="fa fa-edit"></i>
                             </a>
