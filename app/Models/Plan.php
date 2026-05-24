@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Plan extends Model
 {
@@ -20,5 +21,17 @@ class Plan extends Model
     public function vendor()
     {
         return $this->belongsTo(User::class, 'vendor_id');
+    }
+
+    protected static function booted(){
+        static::addGlobalScope('accessible', function ($query) {
+            if (!Auth::check()) {
+                return;
+            }
+
+            if (Auth::user()->role !== 'superadmin') {
+                $query->where('vendor_id', Auth::user()->vendor->id);
+            }
+        });
     }
 }

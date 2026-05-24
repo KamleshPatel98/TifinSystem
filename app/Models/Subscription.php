@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Subscription extends Model
 {
@@ -35,5 +36,17 @@ class Subscription extends Model
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+
+    protected static function booted(){
+        static::addGlobalScope('accessible', function ($query) {
+            if (!Auth::check()) {
+                return;
+            }
+
+            if (Auth::user()->role !== 'superadmin') {
+                $query->where('vendor_id', Auth::user()->vendor->id);
+            }
+        });
     }
 }

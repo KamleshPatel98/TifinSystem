@@ -75,16 +75,4 @@ class Vendor extends Model
             ? asset('storage/vendors/' . $this->logo)
             : null;
     }
-
-    protected static function booted(){
-        static::addGlobalScope('accessible', function ($query) {
-            if (!Auth::check()) {
-                return;
-            }
-
-            if (Auth::user()->role !== 'superadmin') {
-                $query->where('vendor_id', Auth::user()->vendor->id);
-            }
-        });
-    }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Payment extends Model
 {
@@ -26,5 +27,17 @@ class Payment extends Model
     public function customer()
     {
         return $this->belongsTo(User::class, 'customer_id');
+    }
+
+    protected static function booted(){
+        static::addGlobalScope('accessible', function ($query) {
+            if (!Auth::check()) {
+                return;
+            }
+
+            if (Auth::user()->role !== 'superadmin') {
+                $query->where('vendor_id', Auth::user()->vendor->id);
+            }
+        });
     }
 }
