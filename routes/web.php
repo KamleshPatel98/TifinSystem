@@ -43,6 +43,8 @@ Route::middleware(['auth'])->prefix('panel')->group(function () {
     // Customer
     Route::resource('customers', CustomerController::class);
     Route::post('customers-pan-store', [CustomerController::class, 'planStore'])->name('customers.plan.store');
+    Route::post('customers-payment-store', [CustomerController::class, 'paymentStore'])->name('customers.payment.store');
+    Route::put('subscriptions-status/{id}',[CustomerController::class, 'updateSubscriptionStatus'])->name('subscriptions.status.update');
     Route::post('customers-address-store', [CustomerController::class, 'addressStore'])->name('customers.address.store');
     
     // Plans

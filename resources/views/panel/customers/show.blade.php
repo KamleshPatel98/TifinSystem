@@ -210,52 +210,444 @@
 
                                 <div class="y-scroll pe-2 mt-2">
                                     @foreach ($customer->subscriptions as $subscription)
-                                        <div class="card shadow-sm mb-3">
+
+                                        @php
+                                            $paidAmount = $subscription->payments->sum('amount');
+                                            $remainingAmount = $subscription->offer_price - $paidAmount;
+                                        @endphp
+
+                                        <div class="card shadow-sm border-0 mb-3">
                                             <div class="card-body">
-                                                <div class="d-flex justify-content-between align-items-start mb-3">
-                                                    <div>
-                                                        <h5 class="fw-bold mb-1">
+
+                                                <div class="row align-items-center">
+
+                                                    <div class="col-md-8">
+
+                                                        <h5 class="fw-bold mb-2">
                                                             {{ $subscription->plan->name ?? 'N/A' }}
                                                         </h5>
-                                                        <span class="badge bg-success">
-                                                            {{ ucfirst($subscription->paymwnt_status) }}
-                                                        </span>
-                                                    </div>
-                                                    <div class="text-end">
-                                                        <h5 class="text-primary mb-0">
+
+                                                        <div class="mb-2">
+
+                                                            <span class="badge bg-info">
+                                                                Start:
+                                                                {{ \Carbon\Carbon::parse($subscription->start_date)->format('d M Y') }}
+                                                            </span>
+
+                                                            <span class="badge bg-dark">
+                                                                End:
+                                                                {{ \Carbon\Carbon::parse($subscription->end_date)->format('d M Y') }}
+                                                            </span>
+
+                                                        </div>
+
+                                                        <p class="mb-1">
+                                                            <b>Total:</b>
                                                             ₹{{ number_format($subscription->offer_price, 2) }}
-                                                        </h5>
-                                                        <small class="text-muted">
-                                                            {{ $subscription->start_date }}
-                                                            -
-                                                            {{ $subscription->end_date }}
-                                                        </small>
+                                                        </p>
+
+                                                        <p class="mb-1 text-success">
+                                                            <b>Paid:</b>
+                                                            ₹{{ number_format($paidAmount, 2) }}
+                                                        </p>
+
+                                                        <p class="mb-0 text-danger">
+                                                            <b>Remaining:</b>
+                                                            ₹{{ number_format($remainingAmount, 2) }}
+                                                        </p>
+
                                                     </div>
+
+                                                   <div class="col-md-4 text-md-end mt-3 mt-md-0">
+
+                                                        {{-- Status Badges --}}
+                                                        <div class="d-flex flex-wrap gap-2 justify-content-md-end mb-3">
+
+                                                            {{-- Payment Status --}}
+                                                            <span class="badge px-3 py-2
+                                                                @if($subscription->paymwnt_status == 'paid')
+                                                                    bg-success
+                                                                @elseif($subscription->paymwnt_status == 'partial')
+                                                                    bg-warning text-dark
+                                                                @else
+                                                                    bg-danger
+                                                                @endif">
+
+                                                                Payment:
+                                                                {{ ucfirst($subscription->paymwnt_status) }}
+
+                                                            </span>
+
+                                                            {{-- Active Status --}}
+                                                            <span class="badge px-3 py-2
+                                                                {{ $subscription->is_active ? 'bg-success' : 'bg-secondary' }}">
+
+                                                                {{ $subscription->is_active ? 'Active' : 'Inactive' }}
+
+                                                            </span>
+
+                                                        </div>
+
+                                                        {{-- Action Buttons --}}
+                                                        <div class="d-flex flex-wrap gap-2 justify-content-md-end">
+
+                                                            {{-- Change Status --}}
+                                                            <form action="{{ route('subscriptions.status.update', $subscription->id) }}"
+                                                                method="POST">
+
+                                                                @csrf
+                                                                @method('PUT')
+
+                                                                <button type="submit"
+                                                                        class="btn btn-sm
+                                                                        {{ $subscription->is_active ? 'btn-outline-danger' : 'btn-outline-success' }}"
+
+                                                                        onclick="return confirm(
+                                                                            'Are you sure you want to {{ $subscription->is_active ? 'Deactivate' : 'Activate' }} this subscription?'
+                                                                        )">
+
+                                                                    <i class="ti ti-refresh"></i>
+
+                                                                    {{ $subscription->is_active ? 'Deactivate' : 'Activate' }}
+
+                                                                </button>
+
+                                                            </form>
+
+                                                            {{-- Add Payment --}}
+                                                            @if($remainingAmount > 0)
+
+                                                                <button type="button"
+                                                                        class="btn btn-primary btn-sm"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#paymentModal{{ $subscription->id }}">
+
+                                                                    <i class="ti ti-credit-card"></i>
+                                                                    Add Payment
+
+                                                                </button>
+
+                                                            @endif
+
+                                                            {{-- Payment History --}}
+                                                            <button type="button"
+                                                                    class="btn btn-dark btn-sm"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#paymentHistoryModal{{ $subscription->id }}">
+
+                                                                <i class="ti ti-history"></i>
+                                                                History
+
+                                                            </button>
+
+                                                        </div>
+
+                                                    </div>
+
                                                 </div>
 
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <p class="mb-1">
-                                                            <b>Address:</b>
-                                                            {{ $subscription->customerAddress->address ?? 'N/A' }}
-                                                        </p>
-                                                        <p class="mb-1">
-                                                            <b>Plan Days:</b>
-                                                            {{ $subscription->plan->total_days ?? 0 }} Days
-                                                        </p>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <p class="mb-1">
-                                                            <b>Total Payments:</b>
-                                                            {{ $subscription->payments->count() }}
-                                                        </p>
-                                                        <p class="mb-1">
-                                                            <b>Paid Amount:</b>
-                                                            ₹{{ number_format($subscription->payments->sum('amount'), 2) }}
-                                                        </p>
+                                            </div>
+                                        </div>
+
+                                        {{-- Payment Modal --}}
+                                        @if($remainingAmount > 0)
+
+                                            <div class="modal fade"
+                                                id="paymentModal{{ $subscription->id }}"
+                                                tabindex="-1">
+
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+
+                                                        <form action="{{ route('customers.payment.store') }}" method="POST">
+                                                            @csrf
+
+                                                            <input type="hidden"
+                                                                name="subscription_id"
+                                                                value="{{ $subscription->id }}">
+
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">
+                                                                    Add Payment
+                                                                </h5>
+
+                                                                <button type="button"
+                                                                        class="btn-close"
+                                                                        data-bs-dismiss="modal"></button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">
+                                                                        Remaining Amount
+                                                                    </label>
+
+                                                                    <input type="text"
+                                                                        class="form-control"
+                                                                        value="₹{{ number_format($remainingAmount, 2) }}"
+                                                                        readonly>
+                                                                </div>
+
+                                                                <!-- Payment Mode -->
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">
+                                                                        Payment Mode
+                                                                    </label>
+
+                                                                    <select name="payment_mode_id"
+                                                                            class="form-select"
+                                                                            required>
+
+                                                                        <option value="">
+                                                                            Select Payment Mode
+                                                                        </option>
+
+                                                                        @foreach($paymentModes as $id => $name)
+
+                                                                            <option value="{{ $id }}">
+                                                                                {{ $name }}
+                                                                            </option>
+
+                                                                        @endforeach
+
+                                                                    </select>
+                                                                </div>
+
+                                                                <!-- Amount -->
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">
+                                                                        Amount
+                                                                    </label>
+
+                                                                    <input type="number"
+                                                                        step="0.01"
+                                                                        max="{{ $remainingAmount }}"
+                                                                        name="amount"
+                                                                        class="form-control"
+                                                                        placeholder="Enter Amount"
+                                                                        required>
+                                                                </div>
+
+                                                                <!-- Date -->
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">
+                                                                        Date
+                                                                    </label>
+
+                                                                    <input type="date"
+                                                                        name="date"
+                                                                        value="{{ date('Y-m-d') }}"
+                                                                        class="form-control"
+                                                                        required>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="modal-footer">
+
+                                                                <button type="button"
+                                                                        class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">
+                                                                    Close
+                                                                </button>
+
+                                                                <button type="submit"
+                                                                        class="btn btn-primary">
+                                                                    Save Payment
+                                                                </button>
+
+                                                            </div>
+
+                                                        </form>
+
                                                     </div>
                                                 </div>
                                             </div>
+
+                                        @endif
+
+                                        {{-- Payment History Modal --}}
+                                        <div class="modal fade"
+                                            id="paymentHistoryModal{{ $subscription->id }}"
+                                            tabindex="-1"
+                                            aria-hidden="true">
+
+                                            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+
+                                                <div class="modal-content">
+
+                                                    <div class="modal-header">
+
+                                                        <h5 class="modal-title">
+                                                            Payment History
+                                                        </h5>
+
+                                                        <button type="button"
+                                                                class="btn-close"
+                                                                data-bs-dismiss="modal">
+                                                        </button>
+
+                                                    </div>
+
+                                                    <div class="modal-body">
+
+                                                        {{-- Subscription Info --}}
+                                                        <div class="mb-3">
+
+                                                            <h6 class="fw-bold mb-2">
+                                                                {{ $subscription->plan->name ?? 'N/A' }}
+                                                            </h6>
+
+                                                            <div class="row">
+
+                                                                <div class="col-md-4">
+                                                                    <small class="text-muted">
+                                                                        Total Amount
+                                                                    </small>
+
+                                                                    <h6>
+                                                                        ₹{{ number_format($subscription->offer_price, 2) }}
+                                                                    </h6>
+                                                                </div>
+
+                                                                <div class="col-md-4">
+                                                                    <small class="text-muted">
+                                                                        Paid Amount
+                                                                    </small>
+
+                                                                    <h6 class="text-success">
+                                                                        ₹{{ number_format($subscription->payments->sum('amount'), 2) }}
+                                                                    </h6>
+                                                                </div>
+
+                                                                <div class="col-md-4">
+                                                                    <small class="text-muted">
+                                                                        Remaining Amount
+                                                                    </small>
+
+                                                                    <h6 class="text-danger">
+                                                                        ₹{{ number_format(
+                                                                            $subscription->offer_price - $subscription->payments->sum('amount'),
+                                                                            2
+                                                                        ) }}
+                                                                    </h6>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        {{-- Payment Table --}}
+                                                        @if($subscription->payments->count() > 0)
+
+                                                            <div class="table-responsive">
+
+                                                                <table class="table table-bordered align-middle">
+
+                                                                    <thead class="table-light">
+
+                                                                        <tr>
+                                                                            <th>#</th>
+                                                                            <th>Date</th>
+                                                                            <th>Payment Mode</th>
+                                                                            <th>Amount</th>
+                                                                            <th>Created</th>
+                                                                        </tr>
+
+                                                                    </thead>
+
+                                                                    <tbody>
+
+                                                                        @foreach($subscription->payments as $key => $payment)
+
+                                                                            <tr>
+
+                                                                                <td>
+                                                                                    {{ $key + 1 }}
+                                                                                </td>
+
+                                                                                <td>
+                                                                                    {{ \Carbon\Carbon::parse($payment->date)->format('d M Y') }}
+                                                                                </td>
+
+                                                                                <td>
+
+                                                                                    <span class="badge bg-primary">
+
+                                                                                        {{ $payment->paymentMode->name ?? 'N/A' }}
+
+                                                                                    </span>
+
+                                                                                </td>
+
+                                                                                <td class="fw-bold text-success">
+
+                                                                                    ₹{{ number_format($payment->amount, 2) }}
+
+                                                                                </td>
+
+                                                                                <td>
+
+                                                                                    {{ $payment->created_at->format('d M Y h:i A') }}
+
+                                                                                </td>
+
+                                                                            </tr>
+
+                                                                        @endforeach
+
+                                                                    </tbody>
+
+                                                                    <tfoot class="table-light">
+
+                                                                        <tr>
+
+                                                                            <th colspan="3" class="text-end">
+                                                                                Total Paid
+                                                                            </th>
+
+                                                                            <th colspan="2" class="text-success">
+                                                                                ₹{{ number_format($subscription->payments->sum('amount'), 2) }}
+                                                                            </th>
+
+                                                                        </tr>
+
+                                                                    </tfoot>
+
+                                                                </table>
+
+                                                            </div>
+
+                                                        @else
+
+                                                            <div class="text-center py-4">
+
+                                                                <h6 class="text-muted mb-0">
+                                                                    No payment history found.
+                                                                </h6>
+
+                                                            </div>
+
+                                                        @endif
+
+                                                    </div>
+
+                                                    <div class="modal-footer">
+
+                                                        <button type="button"
+                                                                class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">
+
+                                                            Close
+
+                                                        </button>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
                                         </div>
                                     @endforeach
                                 </div>

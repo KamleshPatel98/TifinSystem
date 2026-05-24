@@ -227,6 +227,77 @@ class CustomerController extends Controller
         }
     }
 
+    public function updateSubscriptionStatus($id)
+    {
+        $subscription = Subscription::findOrFail($id);
+        $subscription->update([
+            'is_active' => !$subscription->is_active
+        ]);
+
+        return back()->with(
+            'success',
+            'Subscription status updated successfully!'
+        );
+    }
+
+    public function paymentStore(Request $request)
+    {
+        $request->validate([
+            'subscription_id' => 'required|exists:subscriptions,id',
+            'payment_mode_id' => 'required|exists:payment_modes,id',
+            'amount'          => 'required|numeric|min:1',
+            'date'            => 'required|date',
+        ]);
+    
+        try {
+            $subscription = Subscription::findOrFail($request->subscription_id);
+
+            $paidAmount = $subscription->payments()->sum('amount');
+            $remainingAmount = $subscription->offer_price - $paidAmount;
+            if ($request->amount > $remainingAmount) {
+                return back()->with(
+                    'error',
+                    'Amount exceeds remaining balance.'
+                );
+            }
+
+            // Create Payment
+            Payment::create([
+                'subscription_id' => $subscription->id,
+                'payment_mode_id' => $request->payment_mode_id,
+                'vendor_id'       => $subscription->vendor_id,
+                'customer_id'     => $subscription->customer_id,
+                'amount'          => $request->amount,
+                'date'            => $request->date,
+            ]);
+
+            // Final Paid Amount
+            $finalPaid = $paidAmount + $request->amount;
+
+            // Update Payment Status
+            if ($finalPaid >= $subscription->offer_price) {
+                $subscription->update([
+                    'paymwnt_status' => 'paid'
+                ]);
+            } else {
+                $subscription->update([
+                    'paymwnt_status' => 'partial'
+                ]);
+            }
+
+            return back()->with(
+                'success',
+                'Payment added successfully!'
+            );
+
+        } catch (\Exception $e) {
+            return back()->with(
+                'error',
+                $e->getMessage()
+            );
+        }
+}
+
     public function addressStore(Request $request)
     {
         $request->validate([
