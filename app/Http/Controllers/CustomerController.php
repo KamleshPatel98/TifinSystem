@@ -296,7 +296,18 @@ class CustomerController extends Controller
                 $e->getMessage()
             );
         }
-}
+    }
+
+    public function subscriptionDestroy($id){
+        $subscription = Subscription::findOrFail($id);
+
+        $subscription->delete();
+
+        return back()->with(
+            'success',
+            'Subscription deleted successfully!'
+        );
+    }
 
     public function addressStore(Request $request)
     {

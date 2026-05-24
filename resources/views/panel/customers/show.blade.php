@@ -324,6 +324,27 @@
 
                                                             </form>
 
+                                                            <form action="{{ route('subscriptions.destroy', $subscription->id) }}"
+                                                                method="POST"
+                                                                class="d-inline">
+
+                                                                @csrf
+                                                                @method('DELETE')
+
+                                                                <button type="submit"
+                                                                        class="btn btn-danger btn-sm"
+
+                                                                        onclick="return confirm(
+                                                                            'Are you sure you want to delete this subscription?'
+                                                                        )">
+
+                                                                    <i class="ti ti-trash"></i>
+                                                                    Delete
+
+                                                                </button>
+
+                                                            </form>
+
                                                             {{-- Add Payment --}}
                                                             @if($remainingAmount > 0)
 
