@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class Vendor extends Model
@@ -73,5 +74,17 @@ class Vendor extends Model
         return (!empty($this->logo) && Storage::exists('vendors/' . $this->logo))
             ? asset('storage/vendors/' . $this->logo)
             : null;
+    }
+
+    protected static function booted(){
+        static::addGlobalScope('accessible', function ($query) {
+            if (!Auth::check()) {
+                return;
+            }
+
+            if (Auth::user()->role !== 'superadmin') {
+                $query->where('vendor_id', Auth::user()->vendor->id);
+            }
+        });
     }
 }

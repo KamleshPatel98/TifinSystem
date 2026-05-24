@@ -19,7 +19,6 @@ class PlanController extends Controller
             ->when($request->is_active !== null, function ($q) use ($request) {
                 $q->where('is_active', $request->is_active);
             })
-            ->where('vendor_id', Auth::user()->vendor->id)
             ->paginate(getSetting('page_limit'));
         return view('panel.plans.index', compact('records'));
     }
@@ -47,9 +46,7 @@ class PlanController extends Controller
             'is_active' => 'required|boolean',
         ]);
 
-        $vendorId = Auth::user()->vendor->id;
-        $exist = Plan::where('vendor_id', $vendorId)
-            ->where('name', $request->name)
+        $exist = Plan::where('name', $request->name)
             ->first();
         if ($exist) {
             return back()->with('error', 'Plan already exists.');
