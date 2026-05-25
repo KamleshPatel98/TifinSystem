@@ -230,6 +230,17 @@
                             <img src="{{ asset('assets/images/logo.jpg') }}" alt="Logo" class="company-name" width="40" height="40" class="">
                             {{ getSetting('app_name') }}
                         </span> <br>
+
+                        <form id="searchCustomer" method="GET" class="d-flex">
+                            <input type="text" 
+                                id="customer_search" 
+                                name="customer" 
+                                class="form-control me-3" 
+                                onkeyup="searchCustomer()" 
+                                class="border-4" 
+                                placeholder="Search customer name/mobile">
+                            <button class="btn btn-sm btn-success"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </form>
                     </div>
 
                     <!-- Right: Company name -->
@@ -276,6 +287,12 @@
             </nav>
 
             <div class="content-body">
+
+                <div id="customerList"
+                    class="list-group position-absolute w-100 shadow"
+                    style="z-index: 999;">
+                </div>
+                
                 @yield('content')
             </div>
         </main>
@@ -404,6 +421,72 @@
             });
         });
     </script>
+
+    <script>
+        function searchCustomer(){
+            const customer = $('#customer_search').val();
+            $.ajax({
+                type: "GET",
+                url: "{{ route('customers.search') }}",
+                data: {
+                    customer: customer
+                },
+                success: function (response) {
+                    console.log(response);
+                    let html = '';
+
+                    $.each(response, function (key, customer) {
+
+                        html += `
+                            <a href="javascript:void(0)"
+                               class="list-group-item list-group-item-action customer-item"
+                               data-id="${customer.id}"
+                               data-name="${customer.name}"
+                               data-mobile="${customer.mobile}">
+
+                                <div class="fw-bold">
+                                    ${customer.name}
+                                </div>
+
+                                <small>
+                                    ${customer.mobile}
+                                </small>
+
+                            </a>
+                        `;
+                    });
+
+                    $('#customerList').html(html);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+             // Select Customer
+            $(document).on('click', '.customer-item', function () {
+
+                let id      = $(this).data('id');
+                let name    = $(this).data('name');
+                let mobile  = $(this).data('mobile');
+
+                // Set Value
+                $('#customer_id').val(id);
+
+                $('#customer_search').val(
+                    name + ' / ' + mobile + ' / ' + id
+                );
+
+                // Hide List
+                $('#customerList').html('');
+
+                $('#searchCustomer').attr(
+                    'action',
+                    "{{ route('customers.show', ':id') }}".replace(':id', id)
+                );
+            });
+        });
+    </script>
+
     @stack('scripts')
 </body>
 

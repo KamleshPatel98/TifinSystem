@@ -372,4 +372,14 @@ class CustomerController extends Controller
             return redirect($url)->with('error', 'Something went wrong!');
         }
     }
+
+    public function customerSearch(Request $request)
+    {
+        $records = User::select('id', 'name', 'mobile')
+            ->where('role', 'customer')
+            ->where('name', 'like', "%" . $request->customer . "%")
+            ->orWhere('mobile', 'like', "%" . $request->customer . "%")
+            ->get();
+        return $records;
+    }
 }
