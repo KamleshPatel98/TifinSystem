@@ -10,9 +10,19 @@ class LeaveController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $records = Leave::with('customer:id,name,mobile,profile_pic')
+            ->when($request->customer !== null, function ($q) use ($request) {
+                $q->whereRelation('customer', 'name', 'like', '%' . $request->customer . '%')
+                    ->orWhereRelation('customer', 'mobile', 'like', '%' . $request->customer . '%');
+            })
+            ->when($request->statuss !== null, function ($q) use ($request) {
+                $q->where('statuss', $request->statuss);
+            })
+            ->latest()
+            ->paginate(getSetting('page_limit'));
+        return view('panel.leaves.index', compact('records'));
     }
 
     /**

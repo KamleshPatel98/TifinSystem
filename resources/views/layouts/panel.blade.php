@@ -203,11 +203,19 @@
                     </a>
                 </li>
 
-                <!-- Plan -->
+                <!-- Customer -->
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('customers.*') ? 'active' : '' }}" href="{{ route('customers.index') }}">
                         <i class="fa-solid fa-house-chimney"></i>
                         Customer
+                    </a>
+                </li>
+
+                <!-- Customer -->
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('leaves.*') ? 'active' : '' }}" href="{{ route('leaves.index') }}">
+                        <i class="fa-solid fa-house-chimney"></i>
+                        Customer Leave
                     </a>
                 </li>
             </ul>

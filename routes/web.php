@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DropdownController;
+use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StateController;
@@ -51,4 +52,7 @@ Route::middleware(['auth'])->prefix('panel')->group(function () {
     
     // Plans
     Route::resource('plans', PlanController::class);
+
+    // Leave
+    Route::resource('leaves', LeaveController::class);
 });
