@@ -65,16 +65,16 @@ class LeaveController extends Controller
 
             })
             ->exists();
-        // if ($alreadyExists) {
-        //     return back()->with('error', 'Leave already exists for selected date range.');
-        // }
+        if ($alreadyExists) {
+            return back()->with('error', 'Leave already exists for selected date range.');
+        }
 
         Leave::create([
             'vendor_id'   => Auth::user()->vendor->id ?? null,
             'customer_id' => $request->customer_id,
             'start_date'  => $startDate,
-            'end_date'    => $endDate,
-            'total_days'  => $totalDays,
+            'end_date'    => $request->end_date ? $endDate : null,
+            'total_days'  => $request->end_date ? $totalDays : null,
             'status'      => $request->status,
         ]);
 
