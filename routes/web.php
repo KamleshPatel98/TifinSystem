@@ -6,6 +6,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DropdownController;
 use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StateController;
@@ -57,6 +58,8 @@ Route::middleware(['auth'])->prefix('panel')->group(function () {
     // Subscription
     Route::get('subscriptions', [SubscriptionController::class, 'index'])->name('subscriptions.index');
 
+
+    Route::get('payments', [PaymentController::class, 'index'])->name('payments.index');
 
     // Leave
     Route::resource('leaves', LeaveController::class);

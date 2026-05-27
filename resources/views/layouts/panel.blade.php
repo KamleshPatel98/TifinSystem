@@ -216,6 +216,14 @@
                     </a>
                 </li>
 
+                <!-- Revenue -->
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('payments.*') ? 'active' : '' }}" href="{{ route('payments.index') }}">
+                        <i class="fa-solid fa-house-chimney"></i>
+                        Revenue
+                    </a>
+                </li>
+
                 <!-- Customer -->
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('leaves.*') ? 'active' : '' }}" href="{{ route('leaves.index') }}">
