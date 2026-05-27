@@ -104,3 +104,61 @@ Best regards,
         return "https://wa.me/{$phone}?text=" . urlencode($msg);
     }
 }
+
+if (!function_exists('expireSoonWhatsappUrl')) 
+{
+    function expireSoonWhatsappUrl($customerName, $mobile, $planName, $expiryDate)
+    {
+        $daysLeft = ceil(now()->diffInDays($expiryDate, false));
+
+        $msg = "Dear {$customerName},
+
+We hope you're doing well!
+
+Your tiffin subscription is going to expire soon.
+
+Plan: {$planName}
+Expiry Date: {$expiryDate}
+Days Left: {$daysLeft} Days
+
+To continue your tiffin service without interruption, kindly renew your subscription before the expiry date.
+
+If you have already renewed your subscription, please ignore this message.
+
+Best regards,
+".getSetting('app_name')."
++91 ".getSetting('app_phone');
+
+        $phone = "91".$mobile;
+
+        return "https://wa.me/{$phone}?text=" . urlencode($msg);
+    }
+}
+
+if (!function_exists('expiredWhatsappUrl')) 
+{
+    function expiredWhatsappUrl($customerName, $mobile, $planName, $expiryDate)
+    {
+        $msg = "Dear {$customerName},
+
+We hope you're doing well!
+
+Your tiffin subscription has expired.
+
+Plan: {$planName}
+Expired On: {$expiryDate}
+
+To continue your tiffin service without interruption, kindly renew your subscription as soon as possible.
+
+If you have already renewed your subscription, please ignore this message.
+
+Best regards,
+".getSetting('app_name')."
++91 ".getSetting('app_phone');
+
+        $phone = "91".$mobile;
+
+        return "https://wa.me/{$phone}?text=" . urlencode($msg);
+    }
+
+}

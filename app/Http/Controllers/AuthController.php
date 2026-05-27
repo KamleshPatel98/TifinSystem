@@ -46,7 +46,6 @@ class AuthController extends Controller
         $plans = Plan::count();
         $activeSubscriptions = Subscription::where('is_active', true)->count();
         $revenue = Payment::sum('amount');
-
         $statics = [
             'customers' => $customers,
             'plans' => $plans,
@@ -54,7 +53,22 @@ class AuthController extends Controller
             'revenue' => $revenue,
         ];
 
-        return view('panel.dashboard', compact('statics'));
+        $latestSubscriptionIds = Subscription::selectRaw('MAX(id) as id')
+            ->groupBy('customer_id')
+            ->pluck('id');
+
+        $subscriptionsExpiringSoon = Subscription::with(['customer', 'plan'])
+            ->whereIn('id', $latestSubscriptionIds)
+            ->whereDate('end_date', '>=', now())
+            ->whereDate('end_date', '<=', now()->addDays(7))
+            ->get();
+
+        $expiredSubscriptions = Subscription::with(['customer', 'plan'])
+            ->whereIn('id', $latestSubscriptionIds)
+            ->whereDate('end_date', '<', now())
+            ->get();
+
+        return view('panel.dashboard', compact('statics','subscriptionsExpiringSoon','expiredSubscriptions'));
     }
 
     public function logout()
