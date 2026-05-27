@@ -857,7 +857,7 @@
                                                     <!-- Start Date -->
                                                     <div class="mb-3">
                                                         <label class="form-label">
-                                                            Start Date
+                                                            Start Date <span class="text-danger">*</span>
                                                         </label>
                                                         <input type="text"
                                                             name="start_date"
@@ -873,8 +873,7 @@
                                                         <input type="text"
                                                             name="end_date"
                                                             class="form-control datepicker"
-                                                            autocomplete="OFF"
-                                                            required>
+                                                            autocomplete="OFF">
                                                     </div>
                                                     <!-- Status -->
                                                     <div class="mb-3">

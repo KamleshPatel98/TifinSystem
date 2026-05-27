@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('vendor_id')->nullable()->constrained('vendors')->onDelete('cascade');
             $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
             $table->date('start_date');
-            $table->date('end_date');
-            $table->integer('total_days');
+            $table->date('end_date')->nullable();
+            $table->integer('total_days')->nullsble();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
         });
