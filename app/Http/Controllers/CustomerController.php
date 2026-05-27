@@ -184,7 +184,7 @@ class CustomerController extends Controller
 
             // Check Existing Subscription Date Overlap
             $alreadyExists = Subscription::where('customer_id', $request->customer_id)
-                ->where('plan_id', $request->plan_id)
+                //->where('plan_id', $request->plan_id) // at a time one plan
                 ->where(function ($query) use ($startDate, $endDate) {
                     $query->whereBetween('start_date', [$startDate, $endDate])
                         ->orWhereBetween('end_date', [$startDate, $endDate])

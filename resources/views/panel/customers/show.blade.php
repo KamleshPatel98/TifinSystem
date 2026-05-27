@@ -71,6 +71,7 @@
                             <ul class="nav nav-tabs card-header-tabs" role="tablist">
                                 <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#subscriptions">Subscription</a></li>
                                 <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#addresses">Addresses</a></li>
+                                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#leaves">Leave</a></li>
                             </ul>
                         </div>
                         <div class="card-body tab-content" style="min-height: 375px;">
@@ -830,6 +831,78 @@
                                                 </div>
                                             </div>
                                         @endforelse
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Leaves --}}
+                            <div class="tab-pan fade" id="leaves">
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addLeaveModal">
+                                    Add Leave
+                                </button>
+
+                                <div class="modal fade" id="addLeaveModal" tabindex="-1" aria-labelledby="addLeaveLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+
+                                            <form action="{{ route('leaves.store') }}" method="POST">
+                                                @csrf
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="addLeaveLabel">
+                                                        Add Leave
+                                                    </h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+                                                    <!-- Start Date -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label">
+                                                            Start Date
+                                                        </label>
+                                                        <input type="text"
+                                                            name="start_date"
+                                                            class="form-control datepicker"
+                                                            autocomplete="OFF"
+                                                            required>
+                                                    </div>
+                                                    <!-- End Date -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label">
+                                                            End Date
+                                                        </label>
+                                                        <input type="text"
+                                                            name="end_date"
+                                                            class="form-control datepicker"
+                                                            autocomplete="OFF"
+                                                            required>
+                                                    </div>
+                                                    <!-- Status -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label">
+                                                            Status
+                                                        </label>
+                                                        <select name="status" class="form-select" required>
+                                                            <option value="pending">Pending</option>
+                                                            <option value="approved">Approved</option>
+                                                            <option value="rejected">Rejected</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button"
+                                                        class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                    <button type="submit"
+                                                        class="btn btn-primary">
+                                                        Save
+                                                    </button>
+                                                </div>
+                                            </form>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>

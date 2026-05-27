@@ -8,7 +8,7 @@ class Leave extends Model
 {
     protected $fillable = [
         'vendor_id',
-        'user_id',
+        'customer_id',
         'start_date',
         'end_date',
         'total_days',

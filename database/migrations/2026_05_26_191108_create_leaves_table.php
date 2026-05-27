@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('leaves', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vendor_id')->constrained('vendors')->onDelete('cascade');
+            $table->foreignId('vendor_id')->nullable()->constrained('vendors')->onDelete('cascade');
             $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
             $table->date('start_date');
             $table->date('end_date');
