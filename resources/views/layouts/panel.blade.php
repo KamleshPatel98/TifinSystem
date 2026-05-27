@@ -117,9 +117,6 @@
                         </li>
                     </ul>
                 </li>
-
-
-
                 @php
 
                 $vendorRoutes = [
@@ -208,6 +205,14 @@
                     <a class="nav-link {{ request()->routeIs('customers.*') ? 'active' : '' }}" href="{{ route('customers.index') }}">
                         <i class="fa-solid fa-house-chimney"></i>
                         Customer
+                    </a>
+                </li>
+
+                <!-- Subscription -->
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('subscriptions.*') ? 'active' : '' }}" href="{{ route('subscriptions.index') }}">
+                        <i class="fa-solid fa-house-chimney"></i>
+                        Subscription
                     </a>
                 </li>
 

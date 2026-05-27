@@ -286,7 +286,7 @@ class CustomerController extends Controller
                 'vendor_id'       => $subscription->vendor_id,
                 'customer_id'     => $subscription->customer_id,
                 'amount'          => $request->amount,
-                'date'            => $request->date,
+                'date'            => formatDateToYmd($request->date),
             ]);
 
             // Final Paid Amount
