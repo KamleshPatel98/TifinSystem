@@ -39,7 +39,14 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-        $records = User::where('role', 'customer')
+        $records = User::with([
+                'subscriptions' => function ($q) {
+                    $q->with('plan:id,name')
+                        ->select('id', 'customer_id', 'plan_id', 'start_date', 'end_date')
+                        ->where('is_active', 1);
+                }
+            ])
+            ->where('role', 'customer')
             ->when($request->name !== null, function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->name . '%');
             })

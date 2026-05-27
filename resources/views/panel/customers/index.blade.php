@@ -77,6 +77,7 @@
                         <th>Name</th>
                         <th>Mobile</th>
                         <th>Alt Mobile</th>
+                        <th>Subscription</th>
                         <th>Email</th>
                         <th>Gender</th>
                         <th class="text-center">Status</th>
@@ -90,6 +91,21 @@
                         <td>{{ $row->name ?? '' }}</td>
                         <td>{{ $row->mobile ?? '' }}</td>
                         <td>{{ $row->alt_mobile ?? '' }}</td>
+                        <td>
+                            @forelse($row->subscriptions as $subscription)
+                                <div class="mb-1">
+                                    <strong>{{ $subscription->plan->name ?? '' }}</strong><br>
+
+                                    <small>
+                                        {{ $subscription->start_date ?? '' }}
+                                        to
+                                        {{ $subscription->end_date ?? '' }}
+                                    </small>
+                                </div>
+                            @empty
+                                <span class="text-muted">No Subscription</span>
+                            @endforelse
+                        </td>
                         <td>{{ $row->email ?? '' }}</td>
                         <td>{{ ucfirst($row->gender ?? '') }}</td>
                         <td class="text-center">
@@ -112,7 +128,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="text-center">No Customer Found!</td>
+                        <td colspan="9" class="text-center">No Customer Found!</td>
                     </tr>
                     @endforelse
                 </tbody>
