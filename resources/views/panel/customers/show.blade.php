@@ -227,7 +227,7 @@
                                             $remainingAmount = $subscription->offer_price - $paidAmount;
                                         @endphp
 
-                                        <div class="card shadow-sm border-0 mb-3">
+                                        <div class="card shadow-sm mb-3">
                                             <div class="card-body">
 
                                                 <div class="row align-items-center">
@@ -837,10 +837,9 @@
 
                             {{-- Leaves --}}
                             <div class="tab-pan fade" id="leaves">
-                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addLeaveModal">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addLeaveModal">
                                     Add Leave
                                 </button>
-
                                 <div class="modal fade" id="addLeaveModal" tabindex="-1" aria-labelledby="addLeaveLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -902,6 +901,44 @@
                                                 </div>
                                             </form>
 
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="y-scoll">
+                                    <div class="card mt-2">
+                                        <div class="card-body">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>SN</th>
+                                                        <th>Start Date</th>
+                                                        <th>end Date</th>
+                                                        <th>Total Days</th>
+                                                        <th class="text-center">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($customer->leaves->sortByDesc('id') as $leave)
+                                                        <tr>
+                                                            <td>{{ $loop->iteration }}</td>
+                                                            <td>{{ $leave->start_date }}</td>
+                                                            <td>{{ $leave->end_date }}</td>
+                                                            <td>{{ $leave->total_days }}</td>
+                                                            <td class="text-center">
+                                                                <span class="badge 
+                                                                    @if($leave->status == 'pending') bg-warning
+                                                                    @elseif($leave->status == 'approved') bg-success
+                                                                    @elseif($leave->status == 'rejected') bg-danger
+                                                                    @endif">
+                                                                    
+                                                                    {{ ucfirst($leave->status) }}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

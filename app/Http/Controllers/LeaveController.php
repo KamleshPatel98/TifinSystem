@@ -65,9 +65,9 @@ class LeaveController extends Controller
 
             })
             ->exists();
-        if ($alreadyExists) {
-            return back()->with('error', 'Leave already exists for selected date range.');
-        }
+        // if ($alreadyExists) {
+        //     return back()->with('error', 'Leave already exists for selected date range.');
+        // }
 
         Leave::create([
             'vendor_id'   => Auth::user()->vendor->id ?? null,
@@ -93,7 +93,8 @@ class LeaveController extends Controller
             ]);
         }
 
-        return back()->with('success', 'Leave added successfully!');
+        return to_route('customers.show',['customer' => $request->customer_id, 'tab' => 'leaves'])
+            ->with('success', 'Leave added successfully!');
     }
 
     /**

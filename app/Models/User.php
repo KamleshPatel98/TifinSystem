@@ -89,4 +89,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Subscription::class  , 'customer_id');
     }
+
+    public function leaves()
+    {
+        return $this->hasMany(Leave::class  , 'customer_id');
+    }
+
+
 }
