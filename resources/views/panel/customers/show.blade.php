@@ -348,6 +348,18 @@
 
                                                             {{-- Add Payment --}}
                                                             @if($remainingAmount > 0)
+                                                                @php
+                                                                    $whatsappUrl = dueWhatsappUrl(
+                                                                        $customer->name,
+                                                                        $customer->mobile,
+                                                                        $subscription->plan->name,
+                                                                        $subscription->end_date,
+                                                                        $remainingAmount
+                                                                    )
+                                                                @endphp
+                                                                <a href="{{ $whatsappUrl }}" target="_blank" type="button" class="btn btn-sm btn-success">
+                                                                    <i class="fa-brands fa-whatsapp"></i> Due Chat
+                                                                </a>
 
                                                                 <button type="button"
                                                                         class="btn btn-primary btn-sm"

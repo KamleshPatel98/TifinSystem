@@ -159,6 +159,20 @@
 
                             <td>
                                 @if($row->offer_price > $row->payments_sum_amount)
+                                @php
+                                    $whatsappUrl = dueWhatsappUrl(
+                                        $row->customer->name,
+                                        $row->customer->mobile,
+                                        $row->plan->name,
+                                        $row->end_date,
+                                        $row->offer_price - $row->payments_sum_amount,
+                                    )
+                                @endphp
+
+                                    <a href="{{ $whatsappUrl }}" target="_blank" type="button" class="btn btn-sm btn-success">
+                                        <i class="fa-brands fa-whatsapp me-1"></i> Chat
+                                    </a>
+
                                     <button type="button"
                                             class="btn btn-primary btn-sm"
                                             data-bs-toggle="modal"
@@ -279,6 +293,8 @@
                                             </div>
                                         </div>
                                     </div>
+                                @else
+                                    N/A
                                 @endif
                             </td>
 

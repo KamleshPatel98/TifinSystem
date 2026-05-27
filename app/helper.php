@@ -75,3 +75,32 @@ if(!function_exists("formatDateTime"))
         return $date->format('d M Y h:i A');
     }
 }
+
+if (!function_exists('dueWhatsappUrl')) 
+{
+    function dueWhatsappUrl($customerName, $mobile, $planName, $lastDate, $dueAmount)
+    {
+        $msg = "Dear {$customerName},
+
+We hope you're doing well!
+
+This is a friendly reminder that your tiffin subscription payment is pending.
+
+Plan: {$planName}
+Last Date: {$lastDate}
+Due Amount: ₹{$dueAmount}
+
+To continue your tiffin service without interruption, please renew/pay your subscription at the earliest.
+
+Note: If you have already completed the payment, kindly ignore this message.
+
+Best regards,
+".getSetting('app_name')."
++91 ".getSetting('app_phone');
+
+
+        $phone = "91".$mobile;
+
+        return "https://wa.me/{$phone}?text=" . urlencode($msg);
+    }
+}
