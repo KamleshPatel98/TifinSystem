@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payment;
+use App\Models\Plan;
+use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,7 +42,19 @@ class AuthController extends Controller
 
     public function dashboard()
     {
-        return view('panel.dashboard');
+        $customers = User::where('role', 'customer')->count();
+        $plans = Plan::count();
+        $activeSubscriptions = Subscription::where('is_active', true)->count();
+        $revenue = Payment::sum('amount');
+
+        $statics = [
+            'customers' => $customers,
+            'plans' => $plans,
+            'activeSubscriptions' => $activeSubscriptions,
+            'revenue' => $revenue,
+        ];
+
+        return view('panel.dashboard', compact('statics'));
     }
 
     public function logout()

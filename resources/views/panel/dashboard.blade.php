@@ -17,32 +17,40 @@
     <div class="col-md-3">
         <div class="card stat-card border-0 shadow-sm">
             <div class="card-body">
-                <h6 class="text-muted mb-2">Total Admins</h6>
-                <h3 class="fw-bold mb-0">5</h3>
+                <a href="{{ route('customers.index') }}" class="text-decoration-none text-dark">
+                    <h6 class="text-muted mb-2">Total Customer</h6>
+                    <h3 class="fw-bold mb-0">{{ $statics['customers'] }}</h3>
+                </a>
             </div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="card stat-card border-0 shadow-sm">
             <div class="card-body">
-                <h6 class="text-muted mb-2">Revenue</h6>
-                <h3 class="fw-bold mb-0">₹3000</h3>
+                <a href="{{ route('customers.index') }}" class="text-decoration-none text-dark">
+                    <h6 class="text-muted mb-2">Active Subscription</h6>
+                    <h3 class="fw-bold mb-0">{{ $statics['activeSubscriptions'] }}</h3>
+                </a>
             </div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="card stat-card border-0 shadow-sm">
             <div class="card-body">
-                <h6 class="text-muted mb-2">Total Enquiries</h6>
-                <h3 class="fw-bold mb-0">65</h3>
+                <a href="{{ route('customers.index') }}" class="text-decoration-none text-dark">
+                    <h6 class="text-muted mb-2">Revenue</h6>
+                    <h3 class="fw-bold mb-0">₹{{ $statics['revenue'] }}</h3>
+                </a>
             </div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="card stat-card border-0 shadow-sm">
             <div class="card-body">
-                <h6 class="text-muted mb-2">Pending Enquiries</h6>
-                <h3 class="fw-bold mb-0">5</h3>
+                <a href="{{ route('plans.index') }}" class="text-decoration-none text-dark">
+                    <h6 class="text-muted mb-2">Total Plan</h6>
+                    <h3 class="fw-bold mb-0">{{ $statics['plans'] }}</h3>
+                </a>
             </div>
         </div>
     </div>
