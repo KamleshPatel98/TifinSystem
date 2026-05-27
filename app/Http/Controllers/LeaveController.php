@@ -116,9 +116,45 @@ class LeaveController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Leave $leave)
+    public function update(Request $request)
     {
-        //
+        $request->validate([
+            'customer_id' => 'required|exists:users,id',
+            'start_date'  => 'required|date',
+            'end_date'    => 'required|date|after_or_equal:start_date',
+            'status'      => 'required|in:pending,approved,rejected',
+        ]);
+
+        
+        $startDate = Carbon::parse($request->start_date);
+        $endDate   = Carbon::parse($request->end_date);
+        $totalDays = $startDate->diffInDays($endDate) + 1;
+
+        $leave = Leave::findOrFail($request->edit_id);
+        $leave->update([
+            'customer_id' => $request->customer_id,
+            'start_date'  => $startDate,
+            'end_date'    => $endDate,
+            'total_days'  => $totalDays,
+            'status'      => $request->status,
+        ]);
+
+        $subscription = Subscription::where('customer_id', $request->customer_id)
+            ->where('start_date', '<=', $startDate)
+            ->where('end_date', '>=', $endDate)
+            ->where('is_active', true)
+            ->first();
+        // plan extend
+        if ($subscription && $request->status == 'approved') {
+            $newEndDate = Carbon::parse($subscription->end_date)
+                ->addDays($totalDays);
+
+            $subscription->update([
+                'end_date' => $newEndDate,
+            ]);
+        }
+
+        return back()->with('success', 'Leave updated successfully!');
     }
 
     /**

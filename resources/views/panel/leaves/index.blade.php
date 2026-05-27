@@ -104,9 +104,11 @@
                             </span>
                         </td>
                         <td class="text-center d-flex justify-content-center">
+                            @if($row->status != "approved")
                             <a href="#" class="btn btn-sm btn-outline-warning me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal{{ $row->id }}">
                                 <i class="fa fa-edit"></i>
                             </a>
+                            @endif
                         </td>
                     </tr>
                     @empty
@@ -122,4 +124,71 @@
         </div>
     </div>
 </div>
+
+{{-- Edit Leave Modal --}}
+@foreach($records as $row)
+<div class="modal fade" id="editModal{{ $row->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $row->id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel{{ $row->id }}">Edit Leave <i class="fa fa-edit"></i></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('leaves.update', $row->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <input type="hidden" name="form_mode" value="edit">
+                    <input type="hidden" name="edit_id" value="{{ $row->id }}">
+                    <input type="hidden" name="customer_id" value="{{ $row->customer_id }}">
+
+                    <!-- Start Date -->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Start Date <span class="text-danger">*</span>
+                        </label>
+                        <input type="text"
+                            name="start_date"
+                            class="form-control datepicker"
+                            autocomplete="OFF"
+                            value="{{ old('start_date', $row->start_date ?? '') }}"
+                            required>
+                    </div>
+                    <!-- End Date -->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            End Date <span class="text-danger">*</span>
+                        </label>
+                        <input type="text"
+                            name="end_date"
+                            class="form-control datepicker"
+                            autocomplete="OFF"
+                            value="{{ old('end_date', $row->end_date ?? '') }}"
+                            required>
+                    </div>
+                    <!-- Status -->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Status
+                        </label>
+                        <select name="status" class="form-select" required>
+                            <option value="pending" @selected(old('status', $row->status ?? '') == "pending")>Pending</option>
+                            <option value="approved" @selected(old('status', $row->status ?? '') == "approved")>Approved</option>
+                            <option value="rejected" @selected(old('status', $row->status ?? '') == "rejected")>Rejected</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa fa-times"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-check"></i> Update
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
 @endsection
