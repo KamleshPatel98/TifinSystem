@@ -257,6 +257,7 @@
                                 id="customer_search" 
                                 name="customer" 
                                 class="form-control me-3" 
+                                autocomplete="OFF"
                                 onkeyup="searchCustomer()" 
                                 class="border-4" 
                                 placeholder="Search customer name/mobile">

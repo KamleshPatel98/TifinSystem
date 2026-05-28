@@ -37,9 +37,47 @@
     <div class="col-md-3">
         <div class="card stat-card border-0 shadow-sm">
             <div class="card-body">
+                <a href="{{ route('leaves.index',['date'=>date('d-m-Y')]) }}" class="text-decoration-none text-dark">
+                    <h6 class="text-muted mb-2">Today Leaves</h6>
+                    <h3 class="fw-bold mb-0">{{ $statics['todayLeaves'] }}</h3>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card border-0 shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted mb-2">Today Food Requirement</h6>
+                <h3 class="fw-bold mb-0">{{ $statics['todayFoodRequirement'] }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card border-0 shadow-sm">
+            <div class="card-body">
                 <a href="{{ route('payments.index') }}" class="text-decoration-none text-dark">
                     <h6 class="text-muted mb-2">Revenue</h6>
                     <h3 class="fw-bold mb-0">₹{{ $statics['revenue'] }}</h3>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card border-0 shadow-sm">
+            <div class="card-body">
+                <a href="{{ route('subscriptions.index', ['paymwnt_status' => 'due']) }}" class="text-decoration-none text-dark">
+                    <h6 class="text-muted mb-2">Due Amount</h6>
+                    <h3 class="fw-bold mb-0">₹{{ $statics['dueAmout'] }}</h3>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card border-0 shadow-sm">
+            <div class="card-body">
+                <a href="{{ route('leaves.index', ['status' => 'pending']) }}" class="text-decoration-none text-dark">
+                    <h6 class="text-muted mb-2">Pending Leave</h6>
+                    <h3 class="fw-bold mb-0">{{ $statics['pendingLeaves'] }}</h3>
                 </a>
             </div>
         </div>

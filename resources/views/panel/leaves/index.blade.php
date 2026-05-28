@@ -33,6 +33,9 @@
                     <input type="text" name="customer" value="{{ request('customer') }}" placeholder="Search by customer name/mobile" class="form-control">
                 </div>
                 <div class="col-md-2">
+                    <input type="text" name="date" value="{{ request('date') }}" placeholder="Search by date" class="form-control datepicker" autocomplete="OFF">
+                </div>
+                <div class="col-md-2">
                     <select name="status" class="form-select">
                         <option value="">All Status</option>
                         <option value="pending" @selected(request('status')=='pending' )>Pending</option>

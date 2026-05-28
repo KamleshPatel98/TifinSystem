@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Leave;
 use App\Models\Payment;
 use App\Models\Plan;
 use App\Models\Subscription;
@@ -45,12 +46,28 @@ class AuthController extends Controller
         $customers = User::where('role', 'customer')->count();
         $plans = Plan::count();
         $activeSubscriptions = Subscription::where('is_active', true)->count();
+        $activeCustomerIds = Subscription::where('is_active', true)->pluck('customer_id');
+        $todayLeaves = Leave::where('status', 'approved')
+            ->whereIn('customer_id', $activeCustomerIds)
+            ->whereDate('start_date', '>=', date('Y-m-d'))
+            ->whereDate('end_date', '<=', date('Y-m-d'))
+            ->count();
+        $todayFoodRequirement = $activeSubscriptions - $todayLeaves;
+        $offerPrice = Subscription::sum('offer_price');
         $revenue = Payment::sum('amount');
+        $dueAmout = $offerPrice - $revenue;
+        $pendingLeaves = Leave::where('status', 'pending')->count();
+
         $statics = [
             'customers' => $customers,
             'plans' => $plans,
             'activeSubscriptions' => $activeSubscriptions,
+            'todayLeaves' => $todayLeaves,
+            'todayFoodRequirement' => $todayFoodRequirement,
             'revenue' => $revenue,
+            'dueAmout' => $dueAmout,
+            'todayLeaves' => $todayLeaves,
+            'pendingLeaves' => $pendingLeaves,
         ];
 
         $latestSubscriptionIds = Subscription::selectRaw('MAX(id) as id')

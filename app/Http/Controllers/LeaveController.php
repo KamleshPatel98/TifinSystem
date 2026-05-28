@@ -20,8 +20,12 @@ class LeaveController extends Controller
                 $q->whereRelation('customer', 'name', 'like', '%' . $request->customer . '%')
                     ->orWhereRelation('customer', 'mobile', 'like', '%' . $request->customer . '%');
             })
-            ->when($request->statuss !== null, function ($q) use ($request) {
-                $q->where('statuss', $request->statuss);
+            ->when($request->status !== null, function ($q) use ($request) {
+                $q->where('status', $request->status);
+            })
+            ->when($request->date !== null, function ($q) use ($request) {
+               $q->whereDate('start_date', '<=', formatDateToYmd($request->date))
+                    ->whereDate('end_date', '>=', formatDateToYmd($request->date));
             })
             ->latest()
             ->paginate(getSetting('page_limit'));

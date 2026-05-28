@@ -25,7 +25,10 @@ class SubscriptionController extends Controller
                 $q->where('plan_id', $request->plan_id);
             })
             ->when($request->paymwnt_status !== null, function ($q) use ($request) {
-                $q->where('paymwnt_status', $request->paymwnt_status);
+                $request->paymwnt_status === 'due'
+                    ? $q->where('paymwnt_status', '!=', 'paid')
+                    : $q->where('paymwnt_status', $request->paymwnt_status);
+
             })
             ->when($request->is_active !== null, function ($q) use ($request) {
                 $q->where('is_active', $request->is_active);

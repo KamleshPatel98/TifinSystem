@@ -179,7 +179,7 @@
                                             data-bs-target="#paymentModal{{ $row->id }}">
 
                                         <i class="ti ti-credit-card"></i>
-                                        Add Payment
+                                        ₹{{ $row->offer_price - $row->payments_sum_amount}} Pay
                                     </button>
 
                                     <div class="modal fade"
