@@ -20,7 +20,6 @@ return new class extends Migration
             $table->date('date');
             $table->foreignId('payment_mode_id')->nullable()->constrained('payment_modes')->onDelete('set null');
             $table->string('reference_no')->nullable();
-            $table->boolean('is_active')->default(true)->comment('1 = active, 0 = inactive');
             $table->timestamps();
         });
     }

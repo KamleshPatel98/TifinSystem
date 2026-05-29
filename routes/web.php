@@ -11,6 +11,7 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
@@ -63,4 +64,7 @@ Route::middleware(['auth'])->prefix('panel')->group(function () {
 
     // Leave
     Route::resource('leaves', LeaveController::class);
+
+    // Transaction
+    Route::resource('transactions', TransactionController::class);
 });

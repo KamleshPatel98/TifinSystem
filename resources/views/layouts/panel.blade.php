@@ -231,6 +231,14 @@
                         Customer Leave
                     </a>
                 </li>
+
+                <!-- Transaction -->
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('transactions.*') ? 'active' : '' }}" href="{{ route('transactions.index') }}">
+                        <i class="fa-solid fa-house-chimney"></i>
+                        Transaction Leave
+                    </a>
+                </li>
             </ul>
         </aside>
 

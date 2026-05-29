@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Transaction extends Model
 {
@@ -14,8 +15,12 @@ class Transaction extends Model
         'date',
         'payment_mode_id',
         'reference_no',
-        'is_active',
     ];
+
+    public function getDateattribute($value)
+    {
+        return formatDateTodmY($value);
+    }
 
     public function vendor()
     {
@@ -25,5 +30,17 @@ class Transaction extends Model
     public function paymentMode()
     {
         return $this->belongsTo(PaymentMode::class);
+    }
+
+    protected static function booted(){
+        static::addGlobalScope('accessible', function ($query) {
+            if (!Auth::check()) {
+                return;
+            }
+
+            if (Auth::user()->role !== 'superadmin') {
+                $query->where('vendor_id', Auth::user()->vendor->id);
+            }
+        });
     }
 }
