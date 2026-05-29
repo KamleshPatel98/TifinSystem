@@ -67,75 +67,92 @@
             </div>
 
             <ul class="nav flex-column mt-3" id="sidebarAccordion">
-                <!-- Dashboard -->
+
+                {{-- Dashboard --}}
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('auth.dashboard') ? 'active' : '' }}" href="{{ route('auth.dashboard') }}">
-                        <i class="fa-solid fa-house-chimney"></i>
+                    <a class="nav-link {{ request()->routeIs('auth.dashboard') ? 'active' : '' }}"
+                        href="{{ route('auth.dashboard') }}">
+                        <i class="fa-solid fa-gauge-high"></i>
                         Dashboard
                     </a>
                 </li>
 
+                {{-- Geography --}}
                 @php
-                $geograhyRoutes = [
-                'states.*',
-                'cities.*',
-                'areas.*',
-                ];
+                    $geograhyRoutes = [
+                        'states.*',
+                        'cities.*',
+                        'areas.*',
+                    ];
 
-                $isGeographyActive = request()->routeIs($geograhyRoutes);
+                    $isGeographyActive = request()->routeIs($geograhyRoutes);
                 @endphp
-                <!-- Geography -->
+
                 <li class="nav-item">
                     <a class="nav-link {{ $isGeographyActive ? '' : 'collapsed' }}"
                         data-bs-toggle="collapse"
-                        href="#geoMenu"
-                        aria-expanded="false">
-                        <i class="fa-solid fa-map-location-dot"></i>
+                        href="#geoMenu">
+
+                        <i class="fa-solid fa-earth-asia"></i>
                         Geography
+
                         <i class="fa-solid fa-angle-down ms-auto"></i>
                     </a>
+
                     <ul class="collapse nav flex-column submenu {{ $isGeographyActive ? 'show' : '' }}"
                         id="geoMenu"
                         data-bs-parent="#sidebarAccordion">
 
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('states.*') ? 'active' : '' }}" href="{{ route('states.index') }}">
-                                <i class="fa-solid fa-map-pin"></i> State
+                            <a class="nav-link {{ request()->routeIs('states.*') ? 'active' : '' }}"
+                                href="{{ route('states.index') }}">
+
+                                <i class="fa-solid fa-map-location-dot"></i>
+                                States
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('cities.*') ? 'active' : '' }}" href="{{ route('cities.index') }}">
-                                <i class="fa-solid fa-building-columns"></i> City
+                            <a class="nav-link {{ request()->routeIs('cities.*') ? 'active' : '' }}"
+                                href="{{ route('cities.index') }}">
+
+                                <i class="fa-solid fa-city"></i>
+                                Cities
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('areas.*') ? 'active' : '' }}" href="{{ route('areas.index') }}">
-                                <i class="fa-solid fa-street-view"></i> Area
+                            <a class="nav-link {{ request()->routeIs('areas.*') ? 'active' : '' }}"
+                                href="{{ route('areas.index') }}">
+
+                                <i class="fa-solid fa-location-dot"></i>
+                                Areas
                             </a>
                         </li>
                     </ul>
                 </li>
+
+                {{-- Vendors --}}
                 @php
+                    $vendorRoutes = [
+                        'vendors.*',
+                        'vendor-mappings.*',
+                        'vendor-service-mappings.*',
+                        'vendor-penalty-incentives.*',
+                        'vendor-restrictions.*',
+                    ];
 
-                $vendorRoutes = [
-                'vendors.*',
-                'vendor-mappings.*',
-                'vendor-service-mappings.*',
-                'vendor-penalty-incentives.*',
-                'vendor-restrictions.*',
-                ];
-
-                $isVendorActive = request()->routeIs($vendorRoutes);
+                    $isVendorActive = request()->routeIs($vendorRoutes);
                 @endphp
 
                 <li class="nav-item">
                     <a class="nav-link {{ $isVendorActive ? '' : 'collapsed' }}"
                         data-bs-toggle="collapse"
                         href="#vendorMenu">
-                        <i class="fa-solid fa-handshake-angle"></i>
+
+                        <i class="fa-solid fa-users-gear"></i>
                         Vendors
+
                         <i class="fa-solid fa-angle-down ms-auto"></i>
                     </a>
 
@@ -143,110 +160,123 @@
                         id="vendorMenu"
                         data-bs-parent="#sidebarAccordion">
 
-                        {{-- Add Vendor --}}
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('vendors.create') ? 'active' : '' }}"
                                 href="{{ route('vendors.create') }}">
 
-                                <i class="fa-solid fa-person-circle-plus me-2"></i> Add New
+                                <i class="fa-solid fa-user-plus"></i>
+                                Add Vendor
                             </a>
                         </li>
 
-                        {{-- Joining Request --}}
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('vendors.joining.request') ? 'active' : '' }}"
                                 href="{{ route('vendors.joining.request') }}">
 
-                                <i class="fa-solid fa-user-clock me-2"></i> Joining Request
+                                <i class="fa-solid fa-user-clock"></i>
+                                Joining Requests
                             </a>
                         </li>
 
-                        {{-- Resignation Request --}}
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('vendors.resignation.request') ? 'active' : '' }}"
                                 href="{{ route('vendors.resignation.request') }}">
 
-                                <i class="fa-solid fa-user-minus me-2"></i> Resignation Request
+                                <i class="fa-solid fa-user-minus"></i>
+                                Resignation Requests
                             </a>
                         </li>
 
-                        {{-- Suspened Vendors --}}
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('vendors.suspended.list') ? 'active' : '' }}"
                                 href="{{ route('vendors.suspended.list') }}">
 
-                                <i class="fa-solid fa-user-lock me-2"></i> Suspened List
+                                <i class="fa-solid fa-user-lock"></i>
+                                Suspended Vendors
                             </a>
                         </li>
-
-                        {{-- All Vendors --}}
 
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('vendors.index') ? 'active' : '' }}"
                                 href="{{ route('vendors.index') }}">
 
-                                <i class="fa-solid fa-id-card me-2"></i> All List
+                                <i class="fa-solid fa-id-card"></i>
+                                All Vendors
                             </a>
                         </li>
-
                     </ul>
                 </li>
 
-                <!-- Plan -->
+                {{-- Plans --}}
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('plans.*') ? 'active' : '' }}" href="{{ route('plans.index') }}">
-                        <i class="fa-solid fa-house-chimney"></i>
-                        Plan
+                    <a class="nav-link {{ request()->routeIs('plans.*') ? 'active' : '' }}"
+                        href="{{ route('plans.index') }}">
+
+                        <i class="fa-solid fa-box-open"></i>
+                        Plans
                     </a>
                 </li>
 
-                <!-- Customer -->
+                {{-- Customers --}}
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('customers.*') ? 'active' : '' }}" href="{{ route('customers.index') }}">
-                        <i class="fa-solid fa-house-chimney"></i>
-                        Customer
+                    <a class="nav-link {{ request()->routeIs('customers.*') ? 'active' : '' }}"
+                        href="{{ route('customers.index') }}">
+
+                        <i class="fa-solid fa-users"></i>
+                        Customers
                     </a>
                 </li>
 
-                <!-- Subscription -->
+                {{-- Subscriptions --}}
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('subscriptions.*') ? 'active' : '' }}" href="{{ route('subscriptions.index') }}">
-                        <i class="fa-solid fa-house-chimney"></i>
-                        Subscription
+                    <a class="nav-link {{ request()->routeIs('subscriptions.*') ? 'active' : '' }}"
+                        href="{{ route('subscriptions.index') }}">
+
+                        <i class="fa-solid fa-file-signature"></i>
+                        Subscriptions
                     </a>
                 </li>
 
-                <!-- Revenue -->
+                {{-- Revenue --}}
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('payments.*') ? 'active' : '' }}" href="{{ route('payments.index') }}">
-                        <i class="fa-solid fa-house-chimney"></i>
+                    <a class="nav-link {{ request()->routeIs('payments.*') ? 'active' : '' }}"
+                        href="{{ route('payments.index') }}">
+
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
                         Revenue
                     </a>
                 </li>
 
-                <!-- Customer -->
+                {{-- Transactions --}}
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('leaves.*') ? 'active' : '' }}" href="{{ route('leaves.index') }}">
-                        <i class="fa-solid fa-house-chimney"></i>
+                    <a class="nav-link {{ request()->routeIs('transactions.*') ? 'active' : '' }}"
+                        href="{{ route('transactions.index') }}">
+
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                        Transactions
+                    </a>
+                </li>
+
+                {{-- Ledger --}}
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('ledgers.*') ? 'active' : '' }}"
+                        href="{{ route('ledgers.index') }}">
+
+                        <i class="fa-solid fa-book"></i>
+                        Ledger
+                    </a>
+                </li>
+
+                {{-- Customer Leave --}}
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('leaves.*') ? 'active' : '' }}"
+                        href="{{ route('leaves.index') }}">
+
+                        <i class="fa-solid fa-calendar-xmark"></i>
                         Customer Leave
                     </a>
                 </li>
 
-                <!-- Transaction -->
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('transactions.*') ? 'active' : '' }}" href="{{ route('transactions.index') }}">
-                        <i class="fa-solid fa-house-chimney"></i>
-                        Transaction
-                    </a>
-                </li>
-
-                <!-- Ledger -->
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('ledgers.*') ? 'active' : '' }}" href="{{ route('ledgers.index') }}">
-                        <i class="fa-solid fa-house-chimney"></i>
-                        Ledger
-                    </a>
-                </li>
             </ul>
         </aside>
 
