@@ -6,6 +6,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DropdownController;
 use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\SettingController;
@@ -67,4 +68,6 @@ Route::middleware(['auth'])->prefix('panel')->group(function () {
 
     // Transaction
     Route::resource('transactions', TransactionController::class);
+
+    Route::get('ledgers', [LedgerController::class, 'index'])->name('ledgers.index');
 });

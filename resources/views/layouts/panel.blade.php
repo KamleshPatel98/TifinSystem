@@ -236,7 +236,15 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('transactions.*') ? 'active' : '' }}" href="{{ route('transactions.index') }}">
                         <i class="fa-solid fa-house-chimney"></i>
-                        Transaction Leave
+                        Transaction
+                    </a>
+                </li>
+
+                <!-- Ledger -->
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('ledgers.*') ? 'active' : '' }}" href="{{ route('ledgers.index') }}">
+                        <i class="fa-solid fa-house-chimney"></i>
+                        Ledger
                     </a>
                 </li>
             </ul>

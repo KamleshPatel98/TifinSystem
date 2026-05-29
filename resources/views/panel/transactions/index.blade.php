@@ -227,8 +227,8 @@
                                 Date <span class="text-danger">*</span>
                             </label>
 
-                            <input type="date"
-                                name="text"
+                            <input type="text"
+                                name="date"
                                 class="form-control datepicker"
                                 value="{{ old('date', date('Y-m-d')) }}"
                                 autocomplete="OFF"
