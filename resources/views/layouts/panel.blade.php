@@ -145,6 +145,7 @@
                     $isVendorActive = request()->routeIs($vendorRoutes);
                 @endphp
 
+                @if(Auth::user()->role == 'superadmin')
                 <li class="nav-item">
                     <a class="nav-link {{ $isVendorActive ? '' : 'collapsed' }}"
                         data-bs-toggle="collapse"
@@ -206,6 +207,7 @@
                         </li>
                     </ul>
                 </li>
+                @endif
 
                 {{-- Plans --}}
                 <li class="nav-item">
@@ -324,13 +326,13 @@
                             </button>
 
                             <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                                <li>
+                                {{-- <li>
                                     <a class="dropdown-item" href="#">
                                         <i class="fa-regular fa-user"></i> Profile
                                     </a>
-                                </li>
+                                </li> --}}
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="{{ route('auth.change-password') }}">
                                         <i class="fa-solid fa-key"></i> Change Password
                                     </a>
                                 </li>

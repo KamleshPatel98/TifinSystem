@@ -10,6 +10,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -86,6 +88,48 @@ class AuthController extends Controller
             ->get();
 
         return view('panel.dashboard', compact('statics','subscriptionsExpiringSoon','expiredSubscriptions'));
+    }
+
+    public function changePassword()
+    {
+        return view('panel.auth.change-password');
+    }
+
+    public function changePasswordSubmit(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required',
+            'password' => [
+                'required',
+                'confirmed',
+                Password::min(10)
+                    ->letters()
+                    ->numbers()
+                    ->symbols(),
+            ],
+        ]);
+
+        try {
+            $user = User::find(Auth::user()->id);
+            if (Hash::check($request->old_password, $user->password)) {
+                User::where('id', $user->id)->update([
+                    'password' => Hash::make($request->password),
+                ]);
+
+                Auth::logout();
+                session()->flush();
+                return to_route('auth.login')->with('success', 'Password changed successfully. Please login again with your new password.');
+            } else {
+                return back()->with('error', 'Old password does not match');
+            }
+        } catch (\Exception $ex) {
+            Log::error('Change Password Error!', [
+                'ex' => $ex->getMessage(),
+                'method' => __METHOD__,
+                'line' => __LINE__
+            ]);
+            return back()->with('error', 'Something went wrong');
+        }
     }
 
     public function logout()

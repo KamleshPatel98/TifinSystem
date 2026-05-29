@@ -25,6 +25,8 @@ Route::post('login', [AuthController::class, 'loginSubmit'])->name('auth.login.s
 
 Route::middleware(['auth'])->prefix('panel')->group(function () {
     Route::get('dashboard', [AuthController::class, 'dashboard'])->name('auth.dashboard');
+    Route::get('change-password', [AuthController::class, 'changePassword'])->name('auth.change-password');
+    Route::post('change-password-submit', [AuthController::class, 'changePasswordSubmit'])->name('auth.change-password-submit');
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
 
     Route::get('dropdowns-country', [DropdownController::class, 'country'])->name('dropdowns.country');
