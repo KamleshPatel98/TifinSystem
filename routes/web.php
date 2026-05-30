@@ -74,4 +74,5 @@ Route::middleware(['auth'])->prefix('panel')->group(function () {
     Route::resource('transactions', TransactionController::class);
 
     Route::get('ledgers', [LedgerController::class, 'index'])->name('ledgers.index');
+    Route::get('ledgers/pdf', [LedgerController::class, 'pdf'])->name('ledgers.pdf');
 });

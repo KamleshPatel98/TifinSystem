@@ -72,7 +72,7 @@
                     </select>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label class="form-label">Payment Mode</label>
 
                     <select name="payment_mode_id" class="form-select">
@@ -93,7 +93,7 @@
                     </select>
                 </div>
 
-                <div class="col-md-3 d-flex gap-2">
+                <div class="col-md-4 d-flex gap-2">
 
                     <button type="submit" class="btn btn-primary">
                         <i class="fa fa-search me-1"></i> Search
@@ -106,6 +106,11 @@
 
                     </a>
 
+                    <a href="{{ route('ledgers.pdf', request()->query()) }}"
+                        target="_blank"
+                        class="btn btn-danger">
+                        <i class="fa fa-file-pdf me-1"></i> PDF
+                    </a>
                 </div>
 
             </div>
