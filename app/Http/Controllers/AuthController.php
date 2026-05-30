@@ -49,10 +49,13 @@ class AuthController extends Controller
         $plans = Plan::count();
         $activeSubscriptions = Subscription::where('is_active', true)->count();
         $activeCustomerIds = Subscription::where('is_active', true)->pluck('customer_id');
-        $todayLeaves = Leave::where('status', 'approved')
+        $todayLeaves = Leave::where('status', '!=', 'rejected')
             ->whereIn('customer_id', $activeCustomerIds)
             ->whereDate('start_date', '>=', date('Y-m-d'))
-            ->whereDate('end_date', '<=', date('Y-m-d'))
+            ->where(function ($query) {
+                $query->whereDate('end_date', '>=', date('Y-m-d'))
+                    ->orWhereNull('end_date');
+            })
             ->count();
         $todayFoodRequirement = $activeSubscriptions - $todayLeaves;
         $offerPrice = Subscription::sum('offer_price');

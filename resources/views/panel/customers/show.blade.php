@@ -14,6 +14,11 @@
                     <h5 class="mb-0 fw-semibold">Customer  Management</h5>
                     <small class="text-muted">Manage customer bookings — view customer, view bookings.</small>
                 </div>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{{ route('customers.index') }}" class="btn btn-primary d-flex align-items-center">
+                        <i class="fa fa-list me-2"></i> All Customer
+                    </a>
+                </div>
             </div>  
         </div>
 
@@ -101,9 +106,9 @@
 
                                                         <!-- Plan -->
                                                         <div class="col-md-6 mb-3">
-                                                            <label class="form-label">Plan</label>
+                                                            <label class="form-label">Plan  <span class="text-danger">*</span></label>
 
-                                                            <select name="plan_id" class="form-select" required onchange="setPrice(this)">
+                                                            <select name="plan_id" class="form-select" required onchange="setPrice(this)" required>
                                                                 <option value="">Select Plan</option>
 
                                                                 @foreach($plans as $plan)
@@ -120,7 +125,7 @@
 
                                                         <!-- Customer Address -->
                                                         <div class="col-md-6 mb-3">
-                                                            <label class="form-label">Customer Address</label>
+                                                            <label class="form-label">Customer Address  <span class="text-danger">*</span></label>
 
                                                             <select name="customer_address_id" class="form-select" required>
                                                                 <option value="">Select Address</option>
@@ -138,7 +143,7 @@
 
                                                         <!-- Offer Price -->
                                                         <div class="col-md-4 mb-3">
-                                                            <label class="form-label">Offer Price</label>
+                                                            <label class="form-label">Offer Price  <span class="text-danger">*</span></label>
 
                                                             <input type="number"
                                                                 step="0.01"
@@ -151,7 +156,7 @@
 
                                                         <!-- Start Date -->
                                                         <div class="col-md-4 mb-3">
-                                                            <label class="form-label">Start Date</label>
+                                                            <label class="form-label">Start Date  <span class="text-danger">*</span></label>
 
                                                             <input type="text"
                                                                 name="start_date"
@@ -169,7 +174,7 @@
 
                                                         <!-- Payment Mode -->
                                                         <div class="col-md-4 mb-3">
-                                                            <label class="form-label">Payment Mode</label>
+                                                            <label class="form-label">Payment Mode  <span class="text-danger">*</span></label>
 
                                                             <select name="payment_mode_id" class="form-select" required>
                                                                 <option value="">Select Payment Mode</option>
@@ -184,7 +189,7 @@
 
                                                         <!-- Amount -->
                                                         <div class="col-md-4 mb-3">
-                                                            <label class="form-label">Amount</label>
+                                                            <label class="form-label">Amount  <span class="text-danger">*</span></label>
 
                                                             <input type="number"
                                                                 step="0.01"
@@ -197,7 +202,7 @@
 
                                                         <!-- Payment Date -->
                                                         <div class="col-md-4 mb-3">
-                                                            <label class="form-label">Date</label>
+                                                            <label class="form-label">Date  <span class="text-danger">*</span></label>
 
                                                             <input type="text"
                                                                 name="date"
@@ -719,8 +724,8 @@
 
                                                         <!-- State -->
                                                         <div class="col-md-4 mb-3">
-                                                            <label class="form-label">State</label>
-                                                            <select name="state_id" id="state_id" class="form-select" onchange="getCityList()">
+                                                            <label class="form-label">State  <span class="text-danger">*</span></label>
+                                                            <select name="state_id" id="state_id" class="form-select" onchange="getCityList()" required>
                                                                 <option value="">Select State</option>
                                                                 
                                                             </select>
@@ -728,8 +733,8 @@
 
                                                         <!-- City -->
                                                         <div class="col-md-4 mb-3">
-                                                            <label class="form-label">City</label>
-                                                            <select name="city_id" id="city_id" class="form-select" onchange="getAreaList()">
+                                                            <label class="form-label">City <span class="text-danger">*</span></label>
+                                                            <select name="city_id" id="city_id" class="form-select" onchange="getAreaList()" required>
                                                                 <option value="">Select City</option>
                                                             </select>
                                                         </div>
@@ -744,12 +749,13 @@
 
                                                         <!-- Pincode -->
                                                         <div class="col-md-4 mb-3">
-                                                            <label class="form-label">Pincode</label>
+                                                            <label class="form-label">Pincode <span class="text-danger">*</span></label>
                                                             <input type="text" 
                                                                 name="pincode" 
                                                                 class="form-control" 
                                                                 maxlength="6"
-                                                                placeholder="Enter Pincode">
+                                                                placeholder="Enter Pincode" 
+                                                                required>
                                                         </div>
 
                                                         <!-- Latitude -->
@@ -772,11 +778,12 @@
 
                                                         <!-- Address -->
                                                         <div class="col-md-12 mb-3">
-                                                            <label class="form-label">Address</label>
+                                                            <label class="form-label">Address <span class="text-danger">*</span></label>
                                                             <textarea name="address"
                                                                     rows="3"
                                                                     class="form-control"
-                                                                    placeholder="Enter Full Address"></textarea>
+                                                                    placeholder="Enter Full Address" 
+                                                                    required></textarea>
                                                         </div>
 
                                                         <!-- Address Type -->

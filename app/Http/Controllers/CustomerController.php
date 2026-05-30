@@ -340,7 +340,7 @@ class CustomerController extends Controller
             'customer_id' => 'required|exists:users,id',
             'state_id'    => 'required|exists:states,id',
             'city_id'     => 'required|exists:cities,id',
-            'area_id'     => 'required|exists:areas,id',
+            'area_id'     => 'nullable|exists:areas,id',
             'pincode'     => 'required|digits:6',
             'address'     => 'required|string|max:500',
             'latitude'    => 'nullable|string|max:40',
