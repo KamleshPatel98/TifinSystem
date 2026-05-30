@@ -384,8 +384,12 @@ class CustomerController extends Controller
     {
         $records = User::select('id', 'name', 'mobile')
             ->where('role', 'customer')
-            ->where('name', 'like', "%" . $request->customer . "%")
-            ->orWhere('mobile', 'like', "%" . $request->customer . "%")
+            ->when($request->filled('customer'), function ($query) use ($request) {
+                $query->where(function ($q) use ($request) {
+                    $q->where('name', 'like', '%' . $request->customer . '%')
+                    ->orWhere('mobile', 'like', '%' . $request->customer . '%');
+                });
+            })
             ->get();
         return $records;
     }

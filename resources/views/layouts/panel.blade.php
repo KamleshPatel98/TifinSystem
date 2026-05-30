@@ -279,6 +279,30 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('auth.change-password') ? 'active' : '' }}"
+                        href="{{ route('auth.change-password') }}">
+                        <i class="fa-solid fa-key"></i>
+                        Change Password
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('settings.web-data') ? 'active' : '' }}"
+                        href="{{ route('settings.web-data') }}">
+                        <i class="fa-solid fa-globe"></i>
+                        Web Data
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-danger"
+                        href="{{ route('auth.logout') }}">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Logout
+                    </a>
+                </li>
+
             </ul>
         </aside>
 
@@ -297,7 +321,7 @@
                         </button>
                         <span class="navbar-brand mb-0" id="navCompanyName">
                             <img src="{{ asset('assets/images/logo.jpg') }}" alt="Logo" class="company-name" width="40" height="40" class="">
-                            {{ getSetting('app_name') }}
+                            {{-- {{ getSetting('app_name') }} --}}
                         </span> <br>
 
                         <form id="searchCustomer" method="GET" class="d-flex">
@@ -316,7 +340,7 @@
                     <!-- Right: Company name -->
                     <div class="company-name">
                         <!-- Right: Admin Icon Dropdown -->
-                        <div class="dropdown company-dropdown">
+                        {{-- <div class="dropdown company-dropdown">
                             <button
                                 class="btn company-btn dropdown-toggle"
                                 type="button"
@@ -326,11 +350,6 @@
                             </button>
 
                             <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                                {{-- <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fa-regular fa-user"></i> Profile
-                                    </a>
-                                </li> --}}
                                 <li>
                                     <a class="dropdown-item" href="{{ route('auth.change-password') }}">
                                         <i class="fa-solid fa-key"></i> Change Password
@@ -350,7 +369,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
 
                 </div>
