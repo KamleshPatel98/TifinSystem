@@ -41,11 +41,13 @@ Route::middleware(['auth'])->prefix('panel')->group(function () {
     Route::resource('cities', CityController::class);
     Route::resource('areas', AreaController::class);
 
-    // Vendors
-    Route::resource('vendors', VendorController::class);
-    Route::get('vendors-joining-request', [VendorController::class, 'joiningRequest'])->name('vendors.joining.request');
-    Route::get('vendors-resignation-request', [VendorController::class, 'resignationRequest'])->name('vendors.resignation.request');
-    Route::get('vendors-suspended-list', [VendorController::class, 'suspendedList'])->name('vendors.suspended.list');
+    Route::middleware(('superadmin'))->group(function () {  
+        // Vendors
+        Route::resource('vendors', VendorController::class);
+        Route::get('vendors-joining-request', [VendorController::class, 'joiningRequest'])->name('vendors.joining.request');
+        Route::get('vendors-resignation-request', [VendorController::class, 'resignationRequest'])->name('vendors.resignation.request');
+        Route::get('vendors-suspended-list', [VendorController::class, 'suspendedList'])->name('vendors.suspended.list');
+    });
 
     // Customer
     Route::resource('customers', CustomerController::class);
