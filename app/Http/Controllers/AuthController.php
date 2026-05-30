@@ -45,6 +45,12 @@ class AuthController extends Controller
 
     public function dashboard()
     {
+        Subscription::where('is_active', true)
+            ->where('end_date', '<', date('Y-m-d'))
+            ->update([
+                'is_active' => false
+            ]);
+
         $customers = User::where('role', 'customer')->count();
         $plans = Plan::count();
         $activeSubscriptions = Subscription::where('is_active', true)->count();
