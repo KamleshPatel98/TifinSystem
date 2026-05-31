@@ -78,8 +78,8 @@ class CustomerController extends Controller
             'name'=>'required|string|max:255',
             'mobile'=>'required|digits:10|unique:users,mobile',
             'alt_mobile'=>'nullable|digits:10',
-            'email'=>'required|email|unique:users,email',
-            'password'=>'required|min:6',
+            'email'=>'nullable|email',
+            // 'password'=>'required|min:6',
             'gender'=>'nullable|in:male,female,other',
             'dob'=>'nullable|date',
             'profile_pic'=>'nullable|mimes:jpg,jpeg,png,webp|max:2048',
@@ -91,7 +91,7 @@ class CustomerController extends Controller
                 $userData['profile_pic'] = uploadFile($request->profile_pic, 'customers/');
             }
 
-            $userData['password'] = Hash::make($request->password);
+            $userData['password'] = Hash::make("password");
             $userData['role'] = 'customer';
             unset($userData['dob']);
             $userData['dob'] = formatDateToYmd($request->dob);
@@ -135,7 +135,7 @@ class CustomerController extends Controller
             'name'=>'required|string|max:255',
             'mobile'=>'required|digits:10|unique:users,mobile,'.$customer->id,
             'alt_mobile'=>'nullable|digits:10',
-            'email'=>'required|email|unique:users,email,'.$customer->id,
+            'nullable'=>'required|email',
             'gender'=>'nullable|in:male,female,other',
             'dob'=>'nullable|date',
             'profile_pic'=>'nullable|mimes:jpg,jpeg,png,webp|max:2048',

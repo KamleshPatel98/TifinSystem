@@ -210,7 +210,7 @@ class LedgerController extends Controller
         $data = $this->getLedgerData($request);
 
         $pdf = Pdf::loadView('panel.ledgers.pdf', $data)
-            ->setPaper('a4', 'landscape');
+            ->setPaper('a4', 'portrait');
 
         return $pdf->stream(
             'ledger-report-'.$data['startDate'].'-'.$data['endDate'].'.pdf'

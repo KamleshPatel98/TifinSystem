@@ -230,7 +230,7 @@
                             <input type="text"
                                 name="date"
                                 class="form-control datepicker"
-                                value="{{ old('date', date('Y-m-d')) }}"
+                                value="{{ old('date', date('d-m-Y')) }}"
                                 autocomplete="OFF"
                                 required>
                         </div>

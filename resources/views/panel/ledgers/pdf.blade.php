@@ -9,7 +9,7 @@
         body {
             font-family: DejaVu Sans, sans-serif;
             font-size: 11px;
-            color: #333;
+            color: black;
             margin: 15px;
         }
 
@@ -228,7 +228,7 @@
                     </td>
 
                     <td>
-                        {{ $row->date }}
+                        {{ formatDateTodmY($row->date) }}
                     </td>
 
                     <td>

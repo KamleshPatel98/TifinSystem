@@ -68,18 +68,18 @@
                 <!-- Email -->
                 <div class="col-md-4">
                     <label class="form-label fw-bold">
-                        Email <span class="text-danger">*</span>
+                        Email 
                     </label>
 
                     <input type="email"
                         class="form-control"
                         name="email"
                         value="{{ old('email', $customer->email ?? '') }}"
-                        required>
+                        >
                 </div>
 
                 {{-- Password --}}
-                @if(empty($customer))
+                {{-- @if(empty($customer))
                 <div class="col-md-4">
                     <label class="form-label fw-bold">
                         Password <span class="text-danger">*</span>
@@ -91,7 +91,7 @@
                         value="{{ old('password', $customer->password ?? '') }}"
                         required>
                 </div>
-                @endif
+                @endif --}}
 
                 <!-- Gender -->
                 <div class="col-md-4">
@@ -122,7 +122,7 @@
                 <!-- DOB -->
                 <div class="col-md-4">
                     <label class="form-label fw-bold">
-                        DOB <span class="text-danger">*</span>
+                        DOB 
                     </label>
 
                     <input type="text"
@@ -130,7 +130,7 @@
                         class="form-control datepicker"
                         autocomplete="OFF"
                         value="{{ old('dob', $customer->dob ?? '') }}"
-                        required>
+                        >
                 </div>
 
                 <!-- Profile Image -->
