@@ -179,21 +179,7 @@
                         <label for="meal_time" class="form-label">
                             Meal Time <span class="text-danger">*</span>
                         </label>
-                        <select class="form-select"
-                                id="meal_time"
-                                name="meal_time"
-                                required>
-                            <option value="">Select Meal Time</option>
-                            <option value="Breakfast" {{ old('meal_time') == 'Breakfast' ? 'selected' : '' }}>
-                                Breakfast
-                            </option>
-                            <option value="Lunch" {{ old('meal_time') == 'Lunch' ? 'selected' : '' }}>
-                                Lunch
-                            </option>
-                            <option value="Dinner" {{ old('meal_time') == 'Dinner' ? 'selected' : '' }}>
-                                Dinner
-                            </option>
-                        </select>
+                        <input type="text" name="meal_time" class="form-control" value="{{ old('meal_time') }}" placeholder="Enter meal time" required>
                     </div>
 
                     <!-- Description -->
@@ -314,27 +300,7 @@
                         <label for="meal_time{{ $row->id }}" class="form-label">
                             Meal Time <span class="text-danger">*</span>
                         </label>
-                        <select class="form-select"
-                                id="meal_time{{ $row->id }}"
-                                name="meal_time"
-                                required>
-                            <option value="">Select Meal Time</option>
-
-                            <option value="Breakfast"
-                                {{ old('meal_time', $row->meal_time) == 'Breakfast' ? 'selected' : '' }}>
-                                Breakfast
-                            </option>
-
-                            <option value="Lunch"
-                                {{ old('meal_time', $row->meal_time) == 'Lunch' ? 'selected' : '' }}>
-                                Lunch
-                            </option>
-
-                            <option value="Dinner"
-                                {{ old('meal_time', $row->meal_time) == 'Dinner' ? 'selected' : '' }}>
-                                Dinner
-                            </option>
-                        </select>
+                        <input type="text" name="meal_time" class="form-control" value="{{ old('meal_time', $row->meal_time) }}" placeholder="Enter meal time" required>
                     </div>
 
                     <!-- Description -->

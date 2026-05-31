@@ -52,6 +52,7 @@ class PlanController extends Controller
             return back()->with('error', 'Plan already exists.');
         }
 
+        $vendorId = Auth::user()->vendor->id;
         Plan::create(array_merge(['vendor_id' => $vendorId], $request->all()));
         return back()->with('success', 'Plan created successfully.');
     }

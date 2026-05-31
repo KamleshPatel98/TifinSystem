@@ -18,7 +18,7 @@ class PlanSeeder extends Seeder
                 [
                     'vendor_id'   => 1,
                     'name'        => 'Monthly Breakfast Plan',
-                    'duration'    => 'monthly',
+                    'duration'    => 'Monthly',
                     'price'       => 1999.00,
                     'total_days'  => 30,
                     'meal_time'   => 'breakfast',
@@ -28,7 +28,7 @@ class PlanSeeder extends Seeder
                 [
                     'vendor_id'   => 1,
                     'name'        => 'Weekly Lunch Plan',
-                    'duration'    => 'weekly',
+                    'duration'    => 'Weekly',
                     'price'       => 700.00,
                     'total_days'  => 7,
                     'meal_time'   => 'lunch',
@@ -38,7 +38,7 @@ class PlanSeeder extends Seeder
                 [
                     'vendor_id'   => 1,
                     'name'        => 'Monthly Dinner Plan',
-                    'duration'    => 'monthly',
+                    'duration'    => 'Monthly',
                     'price'       => 1500.00,
                     'total_days'  => 30,
                     'meal_time'   => 'dinner',
@@ -48,7 +48,7 @@ class PlanSeeder extends Seeder
                 [
                     'vendor_id'   => 1,
                     'name'        => 'Monthly Lunch, Dinner Meal Plan',
-                    'duration'    => 'weekly',
+                    'duration'    => 'Weekly',
                     'price'       => 2800.00,
                     'total_days'  => 30,
                     'meal_time'   => 'lunch,dinner',
