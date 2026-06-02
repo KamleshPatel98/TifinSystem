@@ -221,7 +221,7 @@
                         </h5>
 
                         <small class="text-muted">
-                            Recently expired subscriptions
+                            Subscriptions Expired in the Last 30 Days
                         </small>
                     </div>
 

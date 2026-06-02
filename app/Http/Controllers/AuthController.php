@@ -94,6 +94,7 @@ class AuthController extends Controller
         $expiredSubscriptions = Subscription::with(['customer', 'plan'])
             ->whereIn('id', $latestSubscriptionIds)
             ->whereDate('end_date', '<', now())
+            ->whereDate('end_date', '>=', now()->subDays(30))
             ->get();
 
         return view('panel.dashboard', compact('statics','subscriptionsExpiringSoon','expiredSubscriptions'));
