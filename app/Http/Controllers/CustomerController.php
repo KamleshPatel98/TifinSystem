@@ -172,7 +172,7 @@ class CustomerController extends Controller
     {
         $request->validate([
             'plan_id'              => 'required|exists:plans,id',
-            'customer_address_id'  => 'required|exists:customer_addresses,id',
+            'customer_address_id'  => 'nullable|exists:customer_addresses,id',
             'offer_price'          => 'required|numeric|min:0',
             'start_date'           => 'required|date',
 

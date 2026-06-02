@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained('users')->onDelete('cascade'); // users table
             $table->foreignId('plan_id')->constrained('plans')->onDelete('cascade');
             // $table->foreignId('delivery_boy_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->foreignId('customer_address_id')->constrained('customer_addresses')->OnDelete('cascade');
+            $table->foreignId('customer_address_id')->nullable()->constrained('customer_addresses')->OnDelete('set null');
             $table->decimal('price', 8,2);
             $table->decimal('offer_price', 8,2);
             $table->date('start_date');

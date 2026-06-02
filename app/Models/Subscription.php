@@ -28,6 +28,11 @@ class Subscription extends Model
         return $this->belongsTo(User::class, 'customer_id');
     }
 
+    public function customerAddress()
+    {
+        return $this->belongsTo(CustomerAddress::class, 'customer_address_id');
+    }
+
     public function plan()
     {
         return $this->belongsTo(Plan::class, 'plan_id');

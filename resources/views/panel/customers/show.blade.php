@@ -125,9 +125,9 @@
 
                                                         <!-- Customer Address -->
                                                         <div class="col-md-6 mb-3">
-                                                            <label class="form-label">Customer Address  <span class="text-danger">*</span></label>
+                                                            <label class="form-label">Customer Address</label>
 
-                                                            <select name="customer_address_id" class="form-select" required>
+                                                            <select name="customer_address_id" class="form-select">
                                                                 <option value="">Select Address</option>
 
                                                                 @foreach($customer->addresses as $address)

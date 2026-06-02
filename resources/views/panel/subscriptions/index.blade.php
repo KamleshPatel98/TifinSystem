@@ -85,6 +85,7 @@
                         <th>Customer</th>
                         <th>Plan</th>
                         <th class="text-center">Meal Time</th>
+                        <th>Address</th>
                         <th class="text-center">Price</th>
                         <th class="text-center">Start Date</th>
                         <th class="text-center">End Date</th>
@@ -143,6 +144,13 @@
 
                             <td class="text-center">
                                 {{ $row->plan->meal_time ?? '' }}
+                            </td>
+
+                            <td>
+                                {{ $row->customerAddress?->type }} {{ $row->customerAddress?->address }}
+                                @empty($row->customerAddress)
+                                    N/A
+                                @endempty
                             </td>
 
                             <td class="text-center">

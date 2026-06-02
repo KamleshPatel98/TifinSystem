@@ -13,6 +13,7 @@ class SubscriptionController extends Controller
     {
         $records = Subscription::with([
                 'customer:id,name,mobile,profile_pic',
+                'customerAddress:id,type,address',
                 'plan:id,name,total_days,meal_time',
                 'payments:id,amount,date,subscription_id',
             ])
